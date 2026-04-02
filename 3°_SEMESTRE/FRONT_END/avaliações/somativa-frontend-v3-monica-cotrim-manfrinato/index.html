@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="pt-pt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PetAdopt - Encontre um Amigo</title>
+    <link rel="stylesheet" href="src/styles/style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>PetAdopt 🐾</h1>
+      <p id="saudacao-voluntario">A carregar...</p>
+    </header>
+
+    <main class="container">
+      <section id="banner-adocao" class="painel">
+        <h2>Adote, não compre! 🐶</h2>
+        <p>Passe o rato aqui para dar destaque a esta mensagem importante.</p>
+      </section>
+
+      <section class="painel">
+        <h2>Calculadora de Idade Humana (x7)</h2>
+
+        <div class="produto-dica">
+          <img
+            src="src/images/pet.png"
+            alt="Cãozinho à espera de adoção"
+            class="img-produto"
+          />
+        </div>
+
+        <div class="grupo-input">
+          <label for="idade-pet">Idade atual do cão (em anos):</label>
+          <input type="number" id="idade-pet" min="1" value="0" />
+        </div>
+        <p class="total">
+          A idade humana dele é: <strong id="idade-humana">0</strong> anos
+        </p>
+      </section>
+
+      <section class="painel">
+        <h2>Cadastro de Resgate</h2>
+        <div class="grupo-input">
+          <label>Qual é o nome do patudo resgatado?</label>
+          <input
+            type="text"
+            id="nome-pet"
+            placeholder="Ex: Boby, Rex, Luna..."
+          />
+        </div>
+        <button id="btn-cadastrar" class="btn-primario">Cadastrar Pet</button>
+      </section>
+
+      <section class="painel vitrine">
+        <h2>Animais à Espera de um Lar</h2>
+        <button id="btn-limpar" class="btn-secundario">Limpar Lista</button>
+
+        <div id="lista-adocao"></div>
+      </section>
+    </main>
+    <script src="src/scripts/script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,132 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+  background-color: #fdf5e6;
+  color: #333;
+}
+header {
+  background-color: #ff9f43;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+.container {
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+.painel {
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+h2 {
+  color: #ff9f43;
+  margin-bottom: 15px;
+  font-size: 1.5rem;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 5px;
+}
+.grupo-input {
+  margin-bottom: 15px;
+}
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #576574;
+}
+input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #c8d6e5;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+.total {
+  font-size: 1.2rem;
+  margin-top: 10px;
+}
+.total strong {
+  color: #ee5253;
+  font-size: 1.5rem;
+}
+
+.produto-dica {
+  text-align: center;
+  margin-bottom: 15px;
+}
+.img-produto {
+  max-width: 140px;
+  height: auto;
+  border-radius: 50%;
+  border: 4px solid #ff9f43;
+}
+
+.btn-primario,
+.btn-secundario {
+  border: none;
+  padding: 12px;
+  width: 100%;
+  border-radius: 5px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.btn-primario {
+  background-color: #ff9f43;
+  color: white;
+}
+.btn-primario:hover {
+  background-color: #e67e22;
+}
+.btn-secundario {
+  background-color: #ee5253;
+  color: white;
+  margin-bottom: 15px;
+}
+.btn-secundario:hover {
+  background-color: #c0392b;
+}
+
+/* =========================================
+   CLASSES QUE DEVE DESCOMENTAR E COMPLETAR
+   ========================================= */
+
+/* Missão 2: Estilo para quando o rato entra no banner (.destaque-pet) */
+/* Dica: Altere a cor de fundo para #ff9f43 e a cor do texto para branco (#ffffff). A transformação de escala já está pronta! */
+
+
+.destaque-pet {
+    transform: scale(1.03);
+}
+.destaque-pet h2 {
+    color: white;
+    border-color: white;
+    background-color: #ff9f43;
+    color:#ffffff;
+}
+
+/* Missão 4: Estilo do card de adoção (.card-adocao) */
+/* Dica: Adicione uma linha de borda de 2px solid #ff9f43, um espaçamento interno de 15px, pontas arredondadas de 8px e cor de fundo branca (#fff) */
+
+
+.card-adocao {
+    margin-bottom: 10px;
+    border-bottom: 2px solid #ff9f43;
+    padding:15px;
+    border-radius: 8px;
+    background-color: #fff;
+    
+    
+    
+    
+}
