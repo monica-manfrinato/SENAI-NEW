@@ -88,12 +88,35 @@ app.get('/produtos/id', async (req, res) => {
 
 app.post('/produtos', async (req, res) => {
     try {
-        const produtos = await queryAsync("INSERT INTO produto ")
+        const {nome, descricao, preco, categoria, disponivel} = req.body
+
+        if(!nome || !descricao || !preco){
+            return res.status(400).json({
+                sucesso: false,
+                message: 'Campos nome, descrição e preço são obrigatórios!'
+            })
+        }
+
+        if (typeof preco != "number" || preco < 0 ){
+            return res.status(400).json({
+                sucesso: false,
+                message: "Preço precisa ser um número positivo!"
+            })
+        }
         
-        res.json({
+        const novoProduto = {
+            nome: nome.trim(),
+            descricao: descricao.trim(),
+            preco,
+            categoria: categoria,
+            disponivel: disponivel
+        }
+       
+        await queryAsync("INSERT INTO produto SET ?", [novoProduto])
+
+        return res.status(201).json({
             sucesso: true,
-            dados: produtos,
-            total: produtos.length
+            message: "Produto cadastrado"
         })
 
     } catch (erro) {

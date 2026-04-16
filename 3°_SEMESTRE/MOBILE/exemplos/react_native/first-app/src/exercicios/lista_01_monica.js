@@ -34,11 +34,6 @@ export default function Lista01() {
       </View>
 
 
-
-
-
-
-
     </ScrollView>
   );
 }
