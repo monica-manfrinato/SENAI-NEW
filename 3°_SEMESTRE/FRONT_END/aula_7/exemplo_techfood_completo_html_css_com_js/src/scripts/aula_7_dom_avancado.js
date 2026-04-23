@@ -1,5 +1,3 @@
-const { createElement } = require("react");
-
 // 1. SAUDAÇÃO DINÂMICA (Base Aula 5)
 const saudacao = document.querySelector("#boas-vindas");
 const hora = new Date().getHours();
@@ -65,7 +63,7 @@ main.addEventListener('click',(event)=>{
 
         //Efeito visual quando clicado 'pedir agora'
         clicado.textContent = '👌 Adicionado'
-        clicado.styele.backgroundColor = '#206f17'
+        clicado.style.backgroundColor = '#206f17'
         clicado.disable = true //desativa temporariamente o botão para ele o usuário não ficar spamando clique
         setTimeout(() => {
             clicado.textContent = "Pedir agora"
@@ -74,7 +72,7 @@ main.addEventListener('click',(event)=>{
         },1500);
 
         if (!card.querySelector(".badge-adicionado")){
-            card.insertAjacentHTML(
+            card.insertAdjacentHTML(
                 "beforeend", "<span class = 'badge-adicionado'> 👌 no resumo </span>"
             )
         }
@@ -101,6 +99,7 @@ function atualizarPrecoCard(box){ //nome só pra deixar igual mas poderia ser qu
 }
 
 //4.2 FUNÇÃO ADICIONAR ITENS AO RESUMO
+
 function adicionarItemAoResumo(nome, qtd, preco, cardOrigem){
     const secaoResumo = document.querySelector('#secao-resumo')
     const listaResumo = document.querySelector('#lista-resumo')
@@ -109,7 +108,7 @@ function adicionarItemAoResumo(nome, qtd, preco, cardOrigem){
 
     secaoResumo.style.display = "block"
 
-    //criando um item na lista
+    //criando um item na lista (AINDA NÃO ESTÁ ADICIONADO NA TELA, SOMENTE FICA COMO VARIÁVEL GUARDADA)
     const itemLi = document.createElement("li")
     itemLi.classList.add('item-resumo')
 
@@ -122,5 +121,44 @@ function adicionarItemAoResumo(nome, qtd, preco, cardOrigem){
     btnRemover.textContent = "❌"
     btnRemover.classList.add('btn-remover')
 
-    //CONTINUAÇÃO...
+    btnRemover.addEventListener("click", ()=>{
+        itemLi.remove()
+
+        const  badge = cardOrigem.querySelector(".badge-adicionado")
+        if (badge) badge.remove()
+        if (listaResumo.children.length === 0){
+            secaoResumo.style.display = "none"
+        }
+    })
+
+    //aqui q vai ser REALMENTE inserido na página, VISUALMENTE
+    itemLi.appendChild(textoSpan)
+    itemLi.appendChild(btnRemover)
+    listaResumo.appendChild(itemLi)
+
+    //FIM DA FUNÇÃO ADICIONAR ITEM AO resumo
 }
+
+
+
+//4.3 BOTÃO REMOVER TODOS OS ITENS
+
+
+const btnLimpar = document.querySelector("#btn-limpar")
+
+if(btnLimpar){
+    btnLimpar.addEventListener("click", () =>{
+        const listaResumo = document.querySelector("#lista-resumo")
+        const secaoResumo = document.querySelector("#secao-resumo")
+        //pega todos os itens da class, o sem o 'All' pega só o 1° elemento
+        //remover os badge criados pelo JS
+        document.querySelectorAll(".badge-adicionado").forEach((b) => b.remove()) //passa em cada posição e apaga o que tiver nela
+
+        //remover os filhos dessa lista
+        while (listaResumo.firstElementChild) {
+            listaResumo.firstElementChild.remove()            
+        }
+        secaoResumo.style.display = "none"
+    })
+}
+
