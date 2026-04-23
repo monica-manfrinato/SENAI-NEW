@@ -26,11 +26,11 @@ function verificarElementosObrigatorios(cliente, valor, res) {
 app.get('/usuarios', async (req, res) => {
 
     try {
-    const usuarios = await queryAsync("SELECT * FROM usuario")
+    const listaUsuarios = await queryAsync("SELECT * FROM usuario")
         res.json({
             sucesso: true,
-            dados: usuarios,
-            total: usuarios.length
+            dados: listaUsuarios,
+            total: listaUsuarios.length
         })
     } 
     catch (erro) {
