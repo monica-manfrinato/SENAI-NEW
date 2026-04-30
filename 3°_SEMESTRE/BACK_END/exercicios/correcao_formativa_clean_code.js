@@ -40,7 +40,6 @@ function catchFunction(erro, res){
 app.get('/usuarios', async (req, res) => {
     try {
         const listaUsuarios = await queryAsync("SELECT * FROM usuario");
-        // Adicionado o status 200
         res.status(200).json({
             sucesso: true,
             dados: listaUsuarios,
@@ -54,7 +53,7 @@ app.get('/usuarios', async (req, res) => {
 // GET USUÁRIOS PELO ID
 app.get('/usuarios/:id', async (req, res) => {
     try {
-        const id = req.params.id; // Correção 1: Extraindo o ID
+        const id = req.params.id;
 
         const erroId = validarId(id);
         if (erroId) {
