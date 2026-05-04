@@ -1,11 +1,11 @@
 import { View, Text, StyleSheet } from "react-native";
-import Recados from "./hooks/lista_de_exercicios_monica.js";
+import ListaDeCompras from "./flatlist/atv_lista_de_compras.js";
 
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Recados />
+      <ListaDeCompras />
     </View>
   );
 }
