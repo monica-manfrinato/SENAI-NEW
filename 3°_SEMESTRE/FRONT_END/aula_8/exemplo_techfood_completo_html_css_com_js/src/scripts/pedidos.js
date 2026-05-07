@@ -30,11 +30,14 @@ function renderizarPedidos(nome, qtd, preco, cardOrigem){
     lista.innerHTML = "" //zerando para n dar problema 
     let total = 0 //para conseguir acessar de outras funções 
 
+    pedidos.array.forEach(function(pedido, indice){
 
+    const li = document.createElement("li")
+    li.classList.add("item-pedido")
 
     //informações - TEXTO
     const textoSpan = document.createElement("span")
-    textoSpan.innerHTML = //CONTINUAR!!!!!!/////////////////////////////////////////////////////////////////////////
+    textoSpan.innerHTML = "<strong>" + pedido.nome + "</strong>" + '-' + pedido.qtd + "x" + "R$" + pedido.preco.toFixed(2).replace(".", ",") + " = <span class='subtotal-item'> R$" + pedido.subtotal.toFixed(2).replace(".", ",")
 
     //Botão para remover prato
     const btnRemover = document.createElement("button")
@@ -42,19 +45,41 @@ function renderizarPedidos(nome, qtd, preco, cardOrigem){
     btnRemover.classList.add('btn-remover')
 
     btnRemover.addEventListener("click", ()=>{
-        itemLi.remove()
+        const lista = JSON.parse(localStorage.getItem("techfood_pedidos") || "[]")
 
-        const  badge = cardOrigem.querySelector(".badge-adicionado")
-        if (badge) badge.remove()
-        if (listaResumo.children.length === 0){
-            secaoResumo.style.display = "none"
-        }
-    })
+        lista.splice(indice, 1)
 
+        localStorage.setItem("techfood_pedidos")
+        renderizarPedidos()
+
+    }) //fim btn remover
+
+        li.appendChild(textoSpan)
+        li.appendChild(btnRemover)
+        lista.appendChild(li)
+        total += pedido.subtotal
+
+
+    const totalFmt = "R$" + total.toFixed.repleace(".", ",")
+
+    }) //FIM pedidos.forEach
+
+    //jaja faremos
     //aqui q vai ser REALMENTE inserido na página, VISUALMENTE
     itemLi.appendChild(textoSpan)
     itemLi.appendChild(btnRemover)
     listaResumo.appendChild(itemLi)
 
     //FIM DA FUNÇÃO ADICIONAR ITEM AO resumo
+}
+
+function configurarLimparPedidos(){
+    const btnLimpar = document.querySelector("btn-limpar-pedidos")
+
+    if (!btnLimpar) return
+
+    btnLimpar.addEventListener("click", function(){
+        localStorage.removeItem("techfood_pedidos")
+        renderizarPedidos()
+    })
 }
