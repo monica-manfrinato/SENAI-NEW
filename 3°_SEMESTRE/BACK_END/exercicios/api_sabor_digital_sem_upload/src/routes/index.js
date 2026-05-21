@@ -2,8 +2,6 @@ const express = require('express')
 const router = express.Router()
 const produtoRoutes = require('./produtoRoutes')
 const pedidoRoutes = require('./pedidoRoutes')
-const uploadRoutes = require('./uploadRoutes')
-
 
 router.get('/', (req, res) => (
     res.json({
@@ -14,7 +12,6 @@ router.get('/', (req, res) => (
 
 router.use('/produtos', produtoRoutes)
 router.use('/pedidos', pedidoRoutes)
-router.use(uploadRoutes)
-
+router.use('/cardapios', cardapioRoutes)
 
 module.exports = router
