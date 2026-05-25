@@ -4,7 +4,7 @@ const PedidoRepository = require('../repositories/pedidoRepository')
 
 class PedidoService{
     async listarPedidos(){
-        const pedidos = await pedidoRepository.listarPedidos() //acessa o método presente dentro do obj produtoRepository no arquivo ProdutoRepository
+        const pedidos = await PedidoRepository.listarPedidos() //acessa o método presente dentro do obj produtoRepository no arquivo ProdutoRepository
         return{
             sucesso:true,
             dados: pedidos,
@@ -47,8 +47,8 @@ class PedidoService{
     }
 
     async cadastrarPedido(dadosDoPedido){
-        const {cliente, status, total} = dados
-
+        const {cliente, status, total} = dadosDoPedido
+a
         if (!cliente || !status || total === undefined){
             throw{
                 status: 400,
@@ -66,7 +66,8 @@ class PedidoService{
         const novoPedido = {
             cliente: cliente.trim(),
             status: status.trim(),
-            total: total
+            total: total,
+            
         }
 
         const resultado = await PedidoRepository.cadastrarPedido(novoPedido)

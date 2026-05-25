@@ -69,16 +69,16 @@ const jogos = [
   },
 ];
 
-// TODO: adicionar { navigation } como parametro quando a navegacao estiver configurada ✅
+// TODO: adicionar { navigation } como parametro quando a navegacao estiver configurada 
 
 export default function HomeScreen({navigation}) {
-  // TODO: estado para o texto digitado na busca ✅
+  // TODO: estado para o texto digitado na busca 
   const [busca, setBusca] = useState('');
 
-  // TODO: estado com os jogos exibidos na lista — inicia com todos ✅
+  // TODO: estado com os jogos exibidos na lista — inicia com todos 
   const [jogosFiltrados, setJogosFiltrados] = useState(jogos);
 
-  // TODO: filtrar os jogos sempre que o valor de 'busca' mudar ✅
+  // TODO: filtrar os jogos sempre que o valor de 'busca' mudar 
   useEffect(() => {
     const resultado = jogos.filter((jogo) =>
       jogo.titulo.toLowerCase().includes(busca.toLowerCase())
@@ -90,7 +90,7 @@ export default function HomeScreen({navigation}) {
     return (
       <TouchableOpacity
         style={styles.card}
-        // TODO: implementar onPress com navigation.navigate passando os dados do jogo✅
+        // TODO: implementar onPress com navigation.navigate passando os dados do jogo
         onPress={() => navigation.navigate('Detalhe', { ...item })}
       >
         <View style={styles.cardIcone}>
@@ -116,7 +116,7 @@ export default function HomeScreen({navigation}) {
         </Text>
       </View>
 
-      {/* Campo de busca — TODO: adicionar value={busca} e onChangeText={setBusca} */} ✅
+      {/* Campo de busca — TODO: adicionar value={busca} e onChangeText={setBusca} */} 
       <View style={styles.buscaContainer}>
         <TextInput
           style={styles.buscaInput}
@@ -127,7 +127,7 @@ export default function HomeScreen({navigation}) {
         />
       </View>
 
-      {/* TODO: trocar data={jogos} por data={jogosFiltrados} apos implementar o estado */} ✅
+      {/* TODO: trocar data={jogos} por data={jogosFiltrados} apos implementar o estado */} 
       <FlatList
         data={jogosFiltrados}
         keyExtractor={(item) => item.id}

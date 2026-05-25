@@ -24,9 +24,9 @@ const jogoMock = {
 // Os dados chegam via route.params quando o usuario toca em um jogo na HomeScreen
 export default function DetalheScreen({route, navigation}) {
   // Defina os parâmetros de rota, pegando todos os campos presentes no objeto JOGOS definido na HomeScreen
-  const { titulo, genero, plataforma, nota} = route?.params ?? jogoMock;
+  const { titulo, genero, plataforma, nota, sinopse} = route?.params ?? jogoMock;
 
-  // TODO: estado booleano para controlar se o jogo foi salvo na lista ✅
+  // TODO: estado booleano para controlar se o jogo foi salvo na lista 
   const [isSalvo, setIsSalvo] = useState(false);
 
   return (
@@ -58,10 +58,10 @@ export default function DetalheScreen({route, navigation}) {
         </View>
 
         {/* TODO: quando implementar o estado isSalvo, use:✅*/}
-            onPress={() => setIsSalvo(prev => !prev)}
+            {/* onPress={() => setIsSalvo(prev => !prev)}
             style={[styles.botao, isSalvo && styles.botaoAtivo]}
-            texto: isSalvo ? 'Remover da Lista' : 'Adicionar a Lista' 
-        <TouchableOpacity style={styles.botao}>
+            texto: isSalvo ? 'Remover da Lista' : 'Adicionar a Lista'  */}
+        <TouchableOpacity style={styles.botao} onPress={}>
           <Text style={styles.botaoTexto}>Adicionar a Lista</Text>
         </TouchableOpacity>
       </ScrollView>
@@ -69,7 +69,7 @@ export default function DetalheScreen({route, navigation}) {
   );
 }
 
-// TODO: estilizar com as cores e identidade visual do seu tema ❌
+// TODO: estilizar com as cores e identidade visual do seu tema 
 const styles = StyleSheet.create({
   container: {
     flex: 1,

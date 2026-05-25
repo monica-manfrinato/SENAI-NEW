@@ -47,7 +47,7 @@ class ProdutoService{
     }
 
     async cadastrarProduto(dadosDoProduto){
-        const {nome, descricao, preco, categoria, disponivel} = dados
+        const {nome, descricao, preco, categoria, disponivel, imagem} = dadosDoProduto
 
         if (!nome || !descricao || preco === undefined){
             throw{
@@ -68,7 +68,8 @@ class ProdutoService{
             descricao: descricao.trim(),
             preco,
             categoria: categoria || null,
-            disponivel: disponivel || true
+            disponivel: disponivel || true,
+            imagem
         }
 
         const resultado = await ProdutoRepository.cadastrarProduto(novoProduto)
