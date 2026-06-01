@@ -17,22 +17,22 @@ export default function PerfilScreen() {
       <View style={styles.cartao}>
         {/* TODO: personalizar o avatar com a inicial do nome do usuario */}
         <View style={styles.avatar}>
-          <Text style={styles.avatarTexto}>U</Text>
+          <Text style={styles.avatarTexto}>M</Text>
         </View>
         {/* TODO: personalizar nome e e-mail */}
-        <Text style={styles.nome}>Nome do Usuario</Text>
-        <Text style={styles.email}>usuario@email.com</Text>
+        <Text style={styles.nome}>Mônica</Text>
+        <Text style={styles.email}>monica@email.com</Text>
 
         <View style={styles.separador} />
 
         {/* TODO: substituir pelas estatisticas que fazem sentido no seu tema */}
         <View style={styles.infoLinha}>
           <Text style={styles.infoLabel}>Itens salvos</Text>
-          <Text style={styles.infoValor}>0</Text>
+          <Text style={styles.infoValor}>2</Text>
         </View>
         <View style={styles.infoLinha}>
           <Text style={styles.infoLabel}>Itens favoritos</Text>
-          <Text style={styles.infoValor}>0</Text>
+          <Text style={styles.infoValor}>4</Text>
         </View>
         <View style={styles.infoLinha}>
           <Text style={styles.infoLabel}>Membro desde</Text>
@@ -52,10 +52,10 @@ export default function PerfilScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F5F5F5",
+    backgroundColor: "#F4F1EA",
   },
   header: {
-    backgroundColor: "#333333",
+    backgroundColor: "#631A24",
     paddingHorizontal: 20,
     paddingTop: 20,
     paddingBottom: 24,
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
   headerTitulo: {
     fontSize: 26,
     fontWeight: "bold",
-    color: "#FFFFFF",
+    color: "#F4F1EA",
   },
   cartao: {
     margin: 16,
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     padding: 24,
     alignItems: "center",
-    shadowColor: "#000",
+    shadowColor: "#3D2621",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.08,
     shadowRadius: 8,
@@ -81,33 +81,33 @@ const styles = StyleSheet.create({
     width: 88,
     height: 88,
     borderRadius: 44,
-    backgroundColor: "#E0E0E0",
+    backgroundColor: "#C59B4E",
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 3,
-    borderColor: "#AAAAAA",
+    borderColor: "#631A24",
     marginBottom: 16,
   },
   avatarTexto: {
     fontSize: 36,
     fontWeight: "bold",
-    color: "#555555",
+    color: "#F4F1EA",
   },
   nome: {
     fontSize: 22,
     fontWeight: "bold",
-    color: "#1A1A1A",
+    color: "#3D2621",
     marginBottom: 4,
   },
   email: {
     fontSize: 14,
-    color: "#888888",
+    color: "#4A5343",
     marginBottom: 20,
   },
   separador: {
     width: "100%",
     height: 1,
-    backgroundColor: "#F0F0F0",
+    backgroundColor: "#F4F1EA",
     marginBottom: 16,
   },
   infoLinha: {
@@ -118,16 +118,16 @@ const styles = StyleSheet.create({
   },
   infoLabel: {
     fontSize: 14,
-    color: "#555555",
+    color: "#4A5343",
   },
   infoValor: {
     fontSize: 14,
     fontWeight: "600",
-    color: "#333333",
+    color: "#3D2621",
   },
   botao: {
     marginHorizontal: 16,
-    backgroundColor: "#333333",
+    backgroundColor: "#3D2621",
     borderRadius: 12,
     paddingVertical: 14,
     alignItems: "center",
@@ -135,6 +135,6 @@ const styles = StyleSheet.create({
   botaoTexto: {
     fontSize: 15,
     fontWeight: "bold",
-    color: "#FFFFFF",
+    color: "#F4F1EA",
   },
 });

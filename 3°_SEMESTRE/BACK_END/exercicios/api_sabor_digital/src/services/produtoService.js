@@ -4,7 +4,7 @@ const produtoRepository = require('../repositories/produtoRepository')
 
 class ProdutoService{
     async listarProdutos(){
-        const produtos = await ProdutoRepository.listarProdutos() //acessa o método presente dentro do obj produtoRepository no arquivo ProdutoRepository
+        const produtos = await produtoRepository.listarProdutos() //acessa o método presente dentro do obj produtoRepository no arquivo ProdutoRepository
         return{
             sucesso:true,
             dados: produtos,
@@ -22,7 +22,7 @@ class ProdutoService{
             }
         }
 
-        const produto = await ProdutoRepository.buscarProdutoPorId(id)
+        const produto = await produtoRepository.buscarProdutoPorId(id)
 
         if (!produto){
             throw{
@@ -37,7 +37,7 @@ class ProdutoService{
         }
 
 
-        const produtos = await ProdutoRepository.listarProdutos() //acessa o método presente dentro do obj produtoRepository no arquivo ProdutoRepository
+        const produtos = await produtoRepository.listarProdutos() //acessa o método presente dentro do obj produtoRepository no arquivo ProdutoRepository
         return{
             sucesso:true,
             dados: produtos,
@@ -72,7 +72,7 @@ class ProdutoService{
             imagem
         }
 
-        const resultado = await ProdutoRepository.cadastrarProduto(novoProduto)
+        const resultado = await produtoRepository.cadastrarProduto(novoProduto)
 
         return{
             sucesso:true,
@@ -91,7 +91,7 @@ class ProdutoService{
         }
 
         const produtoId = await produtoRepository.buscarProdutoPorId(id)
-        if(produtoId.length == 0){
+        if(!produtoId){
             throw{
                 status: 404,
                 mensagem: "Produto não encontrado"
@@ -101,7 +101,7 @@ class ProdutoService{
         const produtoAtualizado = {}
         const {nome, descricao, preco, categoria, disponivel} = dadosDoProduto
 
-        if (nome !== undefined && nome.trim() !== ' ') produtoAtualizado.nome = nome.trim()
+        if (nome !== undefined && nome.trim() !== '') produtoAtualizado.nome = nome.trim()
         if (descricao !== undefined) produtoAtualizado.descricao = descricao.trim()
         if (preco !== undefined){
             if (typeof preco !== 'number' || preco <= 0){
@@ -112,6 +112,10 @@ class ProdutoService{
             }
         } 
         produtoAtualizado.preco = preco
+        if (dadosDoProduto.imagem !== undefined) {
+            produtoAtualizado.imagem = dadosDoProduto.imagem;
+}
+
 
         if (categoria !== undefined) produtoAtualizado.categoria = categoria
         if (disponivel !== undefined) produtoAtualizado.disponivel = disponivel
@@ -123,7 +127,7 @@ class ProdutoService{
             }
         }
 
-        await ProdutoRepository.atualizarProduto(id, produtoAtualizado)
+        await produtoRepository.atualizarProduto(id, produtoAtualizado)
         
         return{
             sucesso:true,
@@ -141,7 +145,7 @@ class ProdutoService{
             }
         }
 
-        const idProduto = await ProdutoRepository.buscarProdutoPorId(id)
+        const idProduto = await produtoRepository.buscarProdutoPorId(id)
         if (!idProduto){
             throw{
                 status: 404,
@@ -149,7 +153,7 @@ class ProdutoService{
             }
         }
 
-        await ProdutoRepository.apagarProduto(id)
+        await produtoRepository.apagarProduto(id)
         return{
             sucesso:true,
             mensagem:'Produto apagado!'

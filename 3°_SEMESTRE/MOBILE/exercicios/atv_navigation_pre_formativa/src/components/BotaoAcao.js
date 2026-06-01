@@ -17,7 +17,7 @@ export default function BotaoAcao({ texto, onPress, ativo }) {
 // TODO: ajustar as cores para o tema do seu app
 const styles = StyleSheet.create({
   botao: {
-    backgroundColor: '#333333',
+    backgroundColor: '#3D2621',
     borderRadius: 12,
     paddingVertical: 14,
     alignItems: 'center',
@@ -25,11 +25,11 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   botaoAtivo: {
-    backgroundColor: '#555555',
+    backgroundColor: '#631A24',
   },
   texto: {
     fontSize: 15,
     fontWeight: 'bold',
-    color: '#FFFFFF',
+    color: '#F4F1EA',
   },
 });

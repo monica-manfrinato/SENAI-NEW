@@ -1,9 +1,9 @@
 // TODO: estilizar esta tela com as cores e identidade visual do seu tema
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FlatList, SafeAreaView, StyleSheet, Text, View } from "react-native";
 // TODO: apos criar o componente CardJogo, importe-o aqui:
-import { CardJogo } from '../components/CardJogo';
+import CardJogo from "../components/CardJogo";
 
 // Dados de exemplo para voce visualizar o renderItem funcionando
 // Em um app real, esses itens chegariam via route.params enviados pela DetalheScreen
@@ -28,9 +28,12 @@ export default function ListaScreen({ route }) {
   const [itensSalvos, setItensSalvos] = useState(jogosMock);
 
   // Para receber um jogo salvo da DetalheScreen via route.params:
-  // if (route.params?.novoJogo) {
-  //   setItensSalvos(prev => [...prev, route.params.novoJogo]);
-  // }
+
+  useEffect(() => {
+    if (route.params?.novoJogo) {
+      setItensSalvos((prev) => [...prev, route.params.novoJogo]);
+    }
+  }, [route.params?.novoJogo]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -46,8 +49,12 @@ export default function ListaScreen({ route }) {
           // TODO: crie o arquivo src/components/CardJogo.js
           // O componente CardJogo deve receber as props: titulo, genero, plataforma e nota
           // Depois substitua este bloco por:
-           <CardJogo titulo={item.titulo} genero={item.genero} plataforma={item.plataforma} nota={item.nota} />
-   
+          <CardJogo
+            titulo={item.titulo}
+            genero={item.genero}
+            plataforma={item.plataforma}
+            nota={item.nota}
+          />
         )}
         ListEmptyComponent={
           <View style={styles.conteudo}>
@@ -72,10 +79,10 @@ export default function ListaScreen({ route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F5F5F5",
+    backgroundColor: "#F4F1EA",
   },
   header: {
-    backgroundColor: "#333333",
+    backgroundColor: "#631A24",
     paddingHorizontal: 20,
     paddingTop: 20,
     paddingBottom: 24,
@@ -83,7 +90,7 @@ const styles = StyleSheet.create({
   headerTitulo: {
     fontSize: 26,
     fontWeight: "bold",
-    color: "#FFFFFF",
+    color: "#F4F1EA",
   },
   listaVazia: {
     flex: 1,
@@ -98,7 +105,7 @@ const styles = StyleSheet.create({
     width: 96,
     height: 96,
     borderRadius: 48,
-    backgroundColor: "#E0E0E0",
+    backgroundColor: "#C59B4E",
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 20,
@@ -106,25 +113,25 @@ const styles = StyleSheet.create({
   icone: {
     fontSize: 40,
     fontWeight: "bold",
-    color: "#555555",
+    color: "#F4F1EA",
   },
   titulo: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "#1A1A1A",
+    color: "#3D2621",
     marginBottom: 8,
     textAlign: "center",
   },
   descricao: {
     fontSize: 16,
-    color: "#555555",
+    color: "#631A24",
     fontWeight: "600",
     textAlign: "center",
     marginBottom: 12,
   },
   dica: {
     fontSize: 13,
-    color: "#888888",
+    color: "#4A5343",
     textAlign: "center",
     lineHeight: 20,
   },
@@ -134,5 +141,10 @@ const styles = StyleSheet.create({
     marginTop: 12,
     borderRadius: 8,
     padding: 16,
+    shadowColor: "#3D2621",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.06,
+    shadowRadius: 6,
+    elevation: 2,
   },
 });

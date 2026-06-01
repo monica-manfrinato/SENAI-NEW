@@ -121,7 +121,7 @@ export default function HomeScreen({navigation}) {
         <TextInput
           style={styles.buscaInput}
           placeholder="Buscar jogo..."
-          placeholderTextColor="#999"
+          placeholderTextColor="#631A24"
           value={busca} //sempre q o usuário digitar algo novo, vai atualizar pelo setBusca
           onChangeText={setBusca}
         />
@@ -139,29 +139,28 @@ export default function HomeScreen({navigation}) {
   );
 }
 
-// TODO: estilizar com as cores e identidade visual do seu tema
 const styles = StyleSheet.create({
   buscaContainer: {
     backgroundColor: '#FFFFFF',
     paddingHorizontal: 16,
     paddingVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#E0E0E0',
+    borderBottomColor: '#F4F1EA',
   },
   buscaInput: {
-    backgroundColor: '#F0F0F0',
+    backgroundColor: '#F4F1EA',
     borderRadius: 8,
     paddingHorizontal: 14,
     paddingVertical: 10,
     fontSize: 14,
-    color: '#1A1A1A',
+    color: '#3D2621',
   },
   container: {
     flex: 1,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: '#F4F1EA',
   },
   header: {
-    backgroundColor: '#333333',
+    backgroundColor: '#631A24',
     paddingHorizontal: 20,
     paddingTop: 20,
     paddingBottom: 24,
@@ -169,11 +168,11 @@ const styles = StyleSheet.create({
   headerTitulo: {
     fontSize: 26,
     fontWeight: 'bold',
-    color: '#FFFFFF',
+    color: '#F4F1EA',
   },
   headerSubtitulo: {
     fontSize: 13,
-    color: '#CCCCCC',
+    color: '#C59B4E',
     marginTop: 4,
   },
   lista: {
@@ -186,7 +185,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderRadius: 12,
     padding: 14,
-    shadowColor: '#000',
+    shadowColor: '#3D2621',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.08,
     shadowRadius: 6,
@@ -196,7 +195,7 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: '#E0E0E0',
+    backgroundColor: '#631A24',
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 14,
@@ -204,7 +203,7 @@ const styles = StyleSheet.create({
   cardIconeTexto: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#555555',
+    color: '#F4F1EA',
   },
   cardInfo: {
     flex: 1,
@@ -212,11 +211,11 @@ const styles = StyleSheet.create({
   cardTitulo: {
     fontSize: 15,
     fontWeight: '600',
-    color: '#1A1A1A',
+    color: '#3D2621',
     marginBottom: 4,
   },
   cardSubtitulo: {
     fontSize: 13,
-    color: '#888888',
+    color: '#4A5343',
   },
 });

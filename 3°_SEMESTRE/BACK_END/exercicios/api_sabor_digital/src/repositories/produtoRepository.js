@@ -4,8 +4,8 @@ const pool = require('../config/database')
 //trabalha mais com os métodos
 class ProdutoRepository{ //nome bem direto ___ + Repository
     async listarProdutos(){
-        const listaProdutos = await pool.query('SELECT * FROM produto')
-        return listaProdutos
+        const [rows] = await pool.query('SELECT * FROM produto')
+        return rows
     }
 
     async buscarProdutoPorId(id){

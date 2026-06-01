@@ -13,11 +13,36 @@ export default function CardJogo({ titulo, genero, plataforma, nota }) {
 }
 
 const styles = StyleSheet.create({
-  titulo: {},
+  titulo: {
+    fontSize: 22,
+    fontWeight: '700',
+    color: '#3D2621',
+    marginBottom: 6,
+    letterSpacing: 0.5,
+  },
 
-  genero: {},
+  genero: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#4A5343',
+    backgroundColor: '#FFFFFF',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 4,
+    alignSelf: 'flex-start',
+    marginBottom: 8,
+  },
 
-  plataforma: {},
+  plataforma: {
+    fontSize: 14,
+    color: '#3D2621',
+    marginBottom: 6,
+  },
 
-  nota: {},
+  nota: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#C59B4E',
+    marginTop: 4,
+  },
 });

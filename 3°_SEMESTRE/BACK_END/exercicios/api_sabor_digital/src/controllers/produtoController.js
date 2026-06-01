@@ -35,7 +35,10 @@ class ProdutoController{
 
     async cadastrarProduto(req,res){
         try {
-            const resultado = await ProdutoService.cadastrarProduto(req.body)
+            const dadosDoProduto = {
+                ...req.body, // pega todos os campos enviados no body
+                imagem: req.file ? req.file.path : null // adiciona o caminho da imagem
+            };
             res.json(resultado)
         } catch (erro) {
             res.status(erro.status || 500).json({
