@@ -1,0 +1,174 @@
+/* ═══════════════════════════════════════════════════════
+   Estilos para a página de cadastro de pratos
+   ═══════════════════════════════════════════════════════ */
+
+#pagina-cadastro {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+#form-cadastro-wrapper {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.campo-grupo {
+  margin-bottom: 20px;
+}
+
+.campo-grupo label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 6px;
+  color: #2c3e50;
+}
+
+.campo-grupo input,
+.campo-grupo textarea,
+.campo-grupo select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s;
+}
+
+.campo-grupo input:focus,
+.campo-grupo textarea:focus,
+.campo-grupo select:focus {
+  border-color: #e67e22;
+  outline: none;
+}
+
+.obrigatorio {
+  color: #e74c3c;
+}
+
+.contador-chars {
+  font-size: 0.8rem;
+  color: #888;
+  float: right;
+}
+
+.msg-erro {
+  display: block;
+  font-size: 0.8rem;
+  color: #e74c3c;
+  margin-top: 4px;
+}
+
+/* Botões */
+.form-acoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.btn-primario {
+  background-color: #e67e22;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+.btn-primario:hover {
+  background-color: #d35400;
+}
+
+.btn-secundario {
+  background: none;
+  border: 1px solid #2c3e50;
+  color: #2c3e50;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.btn-secundario:hover {
+  background: #2c3e50;
+  color: #fff;
+}
+
+/* Prévia da imagem */
+#previa-wrapper {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#previa-imagem {
+  border: 2px dashed #ccc;
+  border-radius: 12px;
+  padding: 20px;
+  background: #fafafa;
+}
+
+#previa-placeholder {
+  color: #aaa;
+  font-size: 0.9rem;
+}
+
+#previa-img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  display: none;
+}
+
+/* Toast de feedback */
+#toast {
+  margin-top: 20px;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: bold;
+  text-align: center;
+  display: none;
+}
+
+.toast-sucesso {
+  background: #27ae60;
+  color: #fff;
+  display: block;
+}
+
+.toast-erro {
+  background: #e74c3c;
+  color: #fff;
+  display: block;
+}
+
+/* Lista de pratos cadastrados */
+#lista-pratos-cadastrados {
+  margin-top: 20px;
+}
+
+.prato-card {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 15px;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.prato-card h3 {
+  margin-bottom: 8px;
+  color: #2c3e50;
+}
+
+.prato-card img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin-top: 10px;
+}

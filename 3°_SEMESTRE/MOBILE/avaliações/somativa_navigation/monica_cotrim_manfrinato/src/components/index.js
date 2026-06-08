@@ -1,4 +1,2 @@
-
 export { default as BotaoAcao } from './BotaoAcao';
-export { default as CardJogo } from './CardJogo';
-
+export { default as CardFilme } from './CardFilme';

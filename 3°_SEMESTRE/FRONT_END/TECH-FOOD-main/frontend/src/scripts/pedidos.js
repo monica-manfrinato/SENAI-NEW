@@ -23,10 +23,9 @@ document.addEventListener("DOMContentLoaded", function () {
   renderizarPedidos();
   configurarLimparPedidos();
   configurarEnviarCozinha(); // NEW — envia carrinho para a API
-  configurarVerConta();      // NEW — abre/recolhe o painel da conta da mesa
-  configurarFecharConta();   // NEW — encerra a sessão da mesa e volta ao início
+  configurarVerConta(); // NEW — abre/recolhe o painel da conta da mesa
+  configurarFecharConta(); // NEW — encerra a sessão da mesa e volta ao início
 });
-
 
 // ─────────────────────────────────────────────────────────────────────────────
 // renderizarPedidos()
@@ -44,16 +43,18 @@ document.addEventListener("DOMContentLoaded", function () {
 //     ao "Limpar Pedidos" — o que foi à cozinha já foi pedido.
 // ─────────────────────────────────────────────────────────────────────────────
 function renderizarPedidos() {
-  const lista        = document.querySelector("#lista-pedidos");
-  const spanTotal    = document.querySelector("#valor-total");
-  const spanResumo   = document.querySelector("#valor-total-resumo");
+  const lista = document.querySelector("#lista-pedidos");
+  const spanTotal = document.querySelector("#valor-total");
+  const spanResumo = document.querySelector("#valor-total-resumo");
   const spanContador = document.querySelector("#contador-itens");
 
   if (!lista) return;
 
   // Conta da mesa: acumulado de pedidos já enviados à cozinha nesta sessão.
   // sessionStorage persiste enquanto a aba estiver aberta — cada mesa é uma sessão.
-  const totalMesa = parseFloat(sessionStorage.getItem("techfood_total_mesa") || "0");
+  const totalMesa = parseFloat(
+    sessionStorage.getItem("techfood_total_mesa") || "0",
+  );
 
   const pedidos = JSON.parse(localStorage.getItem("techfood_pedidos") || "[]");
 
@@ -62,8 +63,9 @@ function renderizarPedidos() {
       "<li class='pedido-vazio'>Nenhum item ainda. Acesse o " +
       "<a href='index.html'>Cardápio</a> para adicionar! 😊</li>";
     // Carrinho vazio: resumo vai a zero, mas o Total Geral da mesa permanece
-    if (spanResumo)   spanResumo.textContent   = "R$ 0,00";
-    if (spanTotal)    spanTotal.textContent    = `R$ ${totalMesa.toFixed(2).replace(".", ",")}`;
+    if (spanResumo) spanResumo.textContent = "R$ 0,00";
+    if (spanTotal)
+      spanTotal.textContent = `R$ ${totalMesa.toFixed(2).replace(".", ",")}`;
     if (spanContador) spanContador.textContent = "0 itens";
     return;
   }
@@ -89,7 +91,9 @@ function renderizarPedidos() {
 
     // remove do array pelo índice, salva e re-renderiza
     btnRemover.addEventListener("click", function () {
-      const lista = JSON.parse(localStorage.getItem("techfood_pedidos") || "[]");
+      const lista = JSON.parse(
+        localStorage.getItem("techfood_pedidos") || "[]",
+      );
       lista.splice(indice, 1);
       localStorage.setItem("techfood_pedidos", JSON.stringify(lista));
       renderizarPedidos();
@@ -102,18 +106,21 @@ function renderizarPedidos() {
   });
 
   // Resumo (topo): só o que está no carrinho agora
-  if (spanResumo) spanResumo.textContent = `R$ ${totalCarrinho.toFixed(2).replace(".", ",")}`;
+  if (spanResumo)
+    spanResumo.textContent = `R$ ${totalCarrinho.toFixed(2).replace(".", ",")}`;
 
   // Total Geral (rodapé): conta da mesa — acumulado enviado + carrinho atual
   const totalGeral = totalMesa + totalCarrinho;
-  if (spanTotal) spanTotal.textContent = `R$ ${totalGeral.toFixed(2).replace(".", ",")}`;
+  if (spanTotal)
+    spanTotal.textContent = `R$ ${totalGeral.toFixed(2).replace(".", ",")}`;
 
-  const totalItens = pedidos.reduce(function (acc, p) { return acc + p.quantidade; }, 0);
+  const totalItens = pedidos.reduce(function (acc, p) {
+    return acc + p.quantidade;
+  }, 0);
   if (spanContador) {
     spanContador.textContent = `${totalItens} ${totalItens === 1 ? "item" : "itens"}`;
   }
 }
-
 
 // ─────────────────────────────────────────────────────────────────────────────
 // configurarLimparPedidos()
@@ -133,7 +140,6 @@ function configurarLimparPedidos() {
     renderizarPedidos();
   });
 }
-
 
 // ─────────────────────────────────────────────────────────────────────────────
 // configurarEnviarCozinha()                                               NEW
@@ -161,7 +167,9 @@ function configurarEnviarCozinha() {
   if (!btn) return;
 
   btn.addEventListener("click", async function () {
-    const pedidos = JSON.parse(localStorage.getItem("techfood_pedidos") || "[]");
+    const pedidos = JSON.parse(
+      localStorage.getItem("techfood_pedidos") || "[]",
+    );
 
     if (pedidos.length === 0) {
       alert("Adicione itens ao pedido antes de enviar!");
@@ -175,7 +183,7 @@ function configurarEnviarCozinha() {
       return { produto_id: p.produto_id, quantidade: p.quantidade };
     });
 
-    btn.disabled    = true;
+    btn.disabled = true;
     btn.textContent = "Enviando...";
 
     try {
@@ -190,15 +198,29 @@ function configurarEnviarCozinha() {
       // Acumula o total do carrinho atual na conta da mesa.
       // reduce() soma todos os subtotais do carrinho atual.
       // Depois de somar, o pedido já foi enviado — será cobrado.
-      const totalCarrinho = pedidos.reduce(function (acc, p) { return acc + p.subtotal; }, 0);
-      const totalMesa     = parseFloat(sessionStorage.getItem("techfood_total_mesa") || "0");
-      sessionStorage.setItem("techfood_total_mesa", (totalMesa + totalCarrinho).toString());
+      const totalCarrinho = pedidos.reduce(function (acc, p) {
+        return acc + p.subtotal;
+      }, 0);
+      const totalMesa = parseFloat(
+        sessionStorage.getItem("techfood_total_mesa") || "0",
+      );
+      sessionStorage.setItem(
+        "techfood_total_mesa",
+        (totalMesa + totalCarrinho).toString(),
+      );
 
       // Salva os itens no histórico da sessão para o painel "Ver Conta da Mesa".
       // Acumula — cada "Enviar para Cozinha" adiciona ao array existente.
-      const historico = JSON.parse(sessionStorage.getItem("techfood_historico") || "[]");
+      const historico = JSON.parse(
+        sessionStorage.getItem("techfood_historico") || "[]",
+      );
       pedidos.forEach(function (p) {
-        historico.push({ nome: p.nome, quantidade: p.quantidade, preco: p.preco, subtotal: p.subtotal });
+        historico.push({
+          nome: p.nome,
+          quantidade: p.quantidade,
+          preco: p.preco,
+          subtotal: p.subtotal,
+        });
       });
       sessionStorage.setItem("techfood_historico", JSON.stringify(historico));
 
@@ -207,31 +229,29 @@ function configurarEnviarCozinha() {
       localStorage.removeItem("techfood_pedidos");
       renderizarPedidos();
 
-      btn.textContent           = "✓ Pedido Enviado!";
+      btn.textContent = "✓ Pedido Enviado!";
       btn.style.backgroundColor = "#27ae60";
 
       setTimeout(function () {
-        btn.textContent           = "🍳 Enviar para Cozinha";
+        btn.textContent = "🍳 Enviar para Cozinha";
         btn.style.backgroundColor = "";
-        btn.disabled              = false;
+        btn.disabled = false;
       }, 2500);
-
     } catch (erro) {
       // UX: o botão exibe o erro e se re-habilita para o usuário tentar novamente
       // sem precisar recarregar a página. Diferente do cardápio (onde não há retry),
       // aqui a falha pode ser transitória (rede instável, servidor reiniciando).
-      btn.textContent           = "Erro! Tente novamente";
+      btn.textContent = "Erro! Tente novamente";
       btn.style.backgroundColor = "#e74c3c";
-      btn.disabled              = false;
+      btn.disabled = false;
 
       setTimeout(function () {
-        btn.textContent           = "🍳 Enviar para Cozinha";
+        btn.textContent = "🍳 Enviar para Cozinha";
         btn.style.backgroundColor = "";
       }, 2500);
     }
   });
 }
-
 
 // ─────────────────────────────────────────────────────────────────────────────
 // configurarVerConta()                                                    NEW
@@ -244,7 +264,7 @@ function configurarEnviarCozinha() {
 // ─────────────────────────────────────────────────────────────────────────────
 function configurarVerConta() {
   const btnAbrir = document.querySelector("#btn-ver-conta");
-  const painel   = document.querySelector("#painel-conta");
+  const painel = document.querySelector("#painel-conta");
   if (!btnAbrir || !painel) return;
 
   btnAbrir.addEventListener("click", function () {
@@ -259,7 +279,6 @@ function configurarVerConta() {
     }
   });
 }
-
 
 // ─────────────────────────────────────────────────────────────────────────────
 // configurarFecharConta()                                                 NEW
@@ -280,9 +299,9 @@ function configurarVerConta() {
 //     localStorage:   techfood_pedidos   → descarta carrinho não enviado
 // ─────────────────────────────────────────────────────────────────────────────
 function configurarFecharConta() {
-  const btnAbrir     = document.querySelector("#btn-fechar-conta");
-  const modal        = document.querySelector("#modal-fechar-conta");
-  const btnCancelar  = document.querySelector("#btn-cancelar-fechar");
+  const btnAbrir = document.querySelector("#btn-fechar-conta");
+  const modal = document.querySelector("#modal-fechar-conta");
+  const btnCancelar = document.querySelector("#btn-cancelar-fechar");
   const btnConfirmar = document.querySelector("#btn-confirmar-fechar");
 
   if (!btnAbrir || !modal) return;
@@ -302,17 +321,16 @@ function configurarFecharConta() {
   // Confirmar — zera a sessão completa da mesa e volta ao cardápio
   if (btnConfirmar) {
     btnConfirmar.addEventListener("click", function () {
-      sessionStorage.removeItem("techfood_cliente");    // força modal de nome de novo
+      sessionStorage.removeItem("techfood_cliente"); // força modal de nome de novo
       sessionStorage.removeItem("techfood_total_mesa"); // zera o Total Geral
-      sessionStorage.removeItem("techfood_historico");  // limpa o painel da conta
-      localStorage.removeItem("techfood_pedidos");      // descarta carrinho não enviado
+      sessionStorage.removeItem("techfood_historico"); // limpa o painel da conta
+      localStorage.removeItem("techfood_pedidos"); // descarta carrinho não enviado
 
       // global.js detecta ausência de techfood_cliente e exibe o modal de boas-vindas
       window.location.href = "index.html";
     });
   }
 }
-
 
 // ─────────────────────────────────────────────────────────────────────────────
 // renderizarContaMesa()                                                   NEW
@@ -327,13 +345,15 @@ function renderizarContaMesa() {
   const lista = document.querySelector("#lista-conta");
   if (!lista) return;
 
-  const historico = JSON.parse(sessionStorage.getItem("techfood_historico") || "[]");
+  const historico = JSON.parse(
+    sessionStorage.getItem("techfood_historico") || "[]",
+  );
 
   if (historico.length === 0) {
     lista.innerHTML =
       "<li class='pedido-vazio'>" +
-        "Nenhum pedido enviado à cozinha ainda.<br>" +
-        "Adicione itens no Cardápio e clique em <strong>Enviar para Cozinha</strong>." +
+      "Nenhum pedido enviado à cozinha ainda.<br>" +
+      "Adicione itens no Cardápio e clique em <strong>Enviar para Cozinha</strong>." +
       "</li>";
     return;
   }
@@ -351,7 +371,6 @@ function renderizarContaMesa() {
   });
 }
 
-
 // ─────────────────────────────────────────────────────────────────────────────
 // gerarBotaoStatus(pedidoId, statusAtual)
 // Aula 9: referência de como o painel da cozinha avançaria o status.
@@ -364,9 +383,9 @@ function renderizarContaMesa() {
 // ─────────────────────────────────────────────────────────────────────────────
 function gerarBotaoStatus(pedidoId, statusAtual) {
   const proximo = {
-    pendente: { label: "▶ Iniciar preparo",    status: "preparo"  },
-    preparo:  { label: "✓ Marcar como pronto", status: "pronto"   },
-    pronto:   { label: "🛵 Marcar entregue",   status: "entregue" },
+    pendente: { label: "▶ Iniciar preparo", status: "preparo" },
+    preparo: { label: "✓ Marcar como pronto", status: "pronto" },
+    pronto: { label: "🛵 Marcar entregue", status: "entregue" },
     entregue: null,
   };
 
@@ -375,7 +394,6 @@ function gerarBotaoStatus(pedidoId, statusAtual) {
 
   return `<button class='btn-status' onclick='avancarStatus(${pedidoId}, "${acao.status}")'>${acao.label}</button>`;
 }
-
 
 // ─────────────────────────────────────────────────────────────────────────────
 // avancarStatus(pedidoId, novoStatus)
