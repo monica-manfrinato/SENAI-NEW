@@ -4,7 +4,8 @@ import TabNavigator from "./TabNavigator";
 export default function AppNavigator() {
   return (
     <NavigationContainer>
-      <TabNavigator />
+      {/* n precisa colocar o stack aq? */}
+      <TabNavigator /> 
     </NavigationContainer>
   );
 }
