@@ -13,6 +13,4 @@ router.get('/', (req, res) => {
 router.use('/produtos', produtoRoutes)
 router.use('/pedidos', pedidoRoutes)
 
-// Se não quiser mais upload separado, não use uploadRoutes aqui
-
 module.exports = router

@@ -13,6 +13,8 @@ class ProdutoRepository{ //nome bem direto ___ + Repository
         return mostrarProduto[0]
     }
 
+    //CADASTRO DO PRODUTO!!!
+    
     async cadastrarProduto(dadosDoProduto){
         const [resultado] = await pool.query('INSERT INTO produto SET ?', [dadosDoProduto]);
         return resultado.insertId;

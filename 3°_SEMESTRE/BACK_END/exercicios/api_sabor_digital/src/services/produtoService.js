@@ -1,4 +1,5 @@
 //faz as validações, confirmações (tipo se o o campo está preenchido se n dar erro)
+//cria o objeto com todos os dados corretos
 
 const produtoRepository = require('../repositories/produtoRepository')
 
@@ -46,43 +47,44 @@ class ProdutoService{
         }
     }
 
-async cadastrarProduto(dadosDoProduto){
-    let { nome, descricao, preco, categoria, disponivel, imagem } = dadosDoProduto;
+    //CADASTRO DO PRODUTO!!!!
+    async cadastrarProduto(dadosDoProduto){
+        let { nome, descricao, preco, categoria, disponivel, imagem } = dadosDoProduto;
 
-    // Converte o preço para número
-    preco = parseFloat(preco);
+        // Converte o preço para número
+        preco = parseFloat(preco);
 
-    if (!nome || !descricao || preco === undefined || isNaN(preco)){
-        throw {
-            status: 400,
-            mensagem: 'Nome, descrição e preço são campos obrigatórios!'
+        if (!nome || !descricao || preco === undefined || isNaN(preco)){
+            throw {
+                status: 400,
+                mensagem: 'Nome, descrição e preço são campos obrigatórios!'
+            };
+        }
+
+        if (typeof preco !== 'number' || preco <= 0){
+            throw {
+                status: 400,
+                mensagem: "Preço deve ser um número positivo"
+            };
+        }
+
+        const novoProduto = {
+            nome: nome.trim(),
+            descricao: descricao.trim(),
+            preco,
+            categoria: categoria || null,
+            disponivel: disponivel ?? true,
+            imagem
+        };
+
+        const resultado = await produtoRepository.cadastrarProduto(novoProduto);
+
+        return {
+            sucesso: true,
+            mensagem: "Produto cadastrado com sucesso",
+            resultado
         };
     }
-
-    if (typeof preco !== 'number' || preco <= 0){
-        throw {
-            status: 400,
-            mensagem: "Preço deve ser um número positivo"
-        };
-    }
-
-    const novoProduto = {
-        nome: nome.trim(),
-        descricao: descricao.trim(),
-        preco,
-        categoria: categoria || null,
-        disponivel: disponivel ?? true,
-        imagem
-    };
-
-    const resultado = await produtoRepository.cadastrarProduto(novoProduto);
-
-    return {
-        sucesso: true,
-        mensagem: "Produto cadastrado com sucesso",
-        resultado
-    };
-}
 
 
     async atualizarProduto(id, dadosDoProduto){

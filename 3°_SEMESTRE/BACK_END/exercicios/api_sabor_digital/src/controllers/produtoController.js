@@ -35,12 +35,12 @@ class ProdutoController{
 
     async cadastrarProduto(req,res){
         try {
-
+            //TESTE DE ENVIO NO CONSOLE (VERIFICAÇÃO)
             console.log('Body:', req.body);
             console.log('File:', req.file);
 
             const dadosDoProduto = {
-                ...req.body,
+                ...req.body,        
                 imagem: req.file ? req.file.path : null
             };
 
