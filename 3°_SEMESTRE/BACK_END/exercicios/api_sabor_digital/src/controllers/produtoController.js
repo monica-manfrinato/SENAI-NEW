@@ -35,19 +35,26 @@ class ProdutoController{
 
     async cadastrarProduto(req,res){
         try {
+
+            console.log('Body:', req.body);
+            console.log('File:', req.file);
+
             const dadosDoProduto = {
-                ...req.body, // pega todos os campos enviados no body
-                imagem: req.file ? req.file.path : null // adiciona o caminho da imagem
+                ...req.body,
+                imagem: req.file ? req.file.path : null
             };
-            res.json(resultado)
+
+            const resultado = await ProdutoService.cadastrarProduto(dadosDoProduto);
+            res.json(resultado);
         } catch (erro) {
             res.status(erro.status || 500).json({
                 sucesso: false,
                 mensagem: erro.mensagem || "Erro interno do servidor",
                 erro: erro.stack || erro
-            })     
+            });
         }
     }
+
 
 
     async atualizarProduto(req,res){

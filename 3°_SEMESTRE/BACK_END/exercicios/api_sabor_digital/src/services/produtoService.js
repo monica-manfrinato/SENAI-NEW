@@ -46,40 +46,44 @@ class ProdutoService{
         }
     }
 
-    async cadastrarProduto(dadosDoProduto){
-        const {nome, descricao, preco, categoria, disponivel, imagem} = dadosDoProduto
+async cadastrarProduto(dadosDoProduto){
+    let { nome, descricao, preco, categoria, disponivel, imagem } = dadosDoProduto;
 
-        if (!nome || !descricao || preco === undefined){
-            throw{
-                status: 400,
-                mensagem: 'Nome, descrição e preço são campos obrigatórios!'
-            }
-        }
-        
-        if (typeof preco !== 'number' || preco <=0){
-            throw{
-                status: 400,
-                mensagem: "Preço deve ser um número positivo"
-            }
-        }
+    // Converte o preço para número
+    preco = parseFloat(preco);
 
-        const novoProduto = {
-            nome: nome.trim(),
-            descricao: descricao.trim(),
-            preco,
-            categoria: categoria || null,
-            disponivel: disponivel || true,
-            imagem
-        }
-
-        const resultado = await produtoRepository.cadastrarProduto(novoProduto)
-
-        return{
-            sucesso:true,
-            mensagem: "Produto cadastrado com sucesso",
-            resultado
-        }
+    if (!nome || !descricao || preco === undefined || isNaN(preco)){
+        throw {
+            status: 400,
+            mensagem: 'Nome, descrição e preço são campos obrigatórios!'
+        };
     }
+
+    if (typeof preco !== 'number' || preco <= 0){
+        throw {
+            status: 400,
+            mensagem: "Preço deve ser um número positivo"
+        };
+    }
+
+    const novoProduto = {
+        nome: nome.trim(),
+        descricao: descricao.trim(),
+        preco,
+        categoria: categoria || null,
+        disponivel: disponivel ?? true,
+        imagem
+    };
+
+    const resultado = await produtoRepository.cadastrarProduto(novoProduto);
+
+    return {
+        sucesso: true,
+        mensagem: "Produto cadastrado com sucesso",
+        resultado
+    };
+}
+
 
     async atualizarProduto(id, dadosDoProduto){
 

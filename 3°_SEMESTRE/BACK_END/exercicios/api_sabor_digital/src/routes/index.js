@@ -2,19 +2,17 @@ const express = require('express')
 const router = express.Router()
 const produtoRoutes = require('./produtoRoutes')
 const pedidoRoutes = require('./pedidoRoutes')
-const uploadRoutes = require('./uploadRoutes')
 
-
-router.get('/', (req, res) => (
+router.get('/', (req, res) => {
     res.json({
         mensagem: 'API Sabor Digital rodando!',
         versao: '5.0.8'
     })
-))
+})
 
 router.use('/produtos', produtoRoutes)
 router.use('/pedidos', pedidoRoutes)
-router.use(uploadRoutes)
 
+// Se não quiser mais upload separado, não use uploadRoutes aqui
 
 module.exports = router

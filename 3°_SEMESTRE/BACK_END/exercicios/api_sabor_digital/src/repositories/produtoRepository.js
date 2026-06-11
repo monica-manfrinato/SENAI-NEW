@@ -14,18 +14,20 @@ class ProdutoRepository{ //nome bem direto ___ + Repository
     }
 
     async cadastrarProduto(dadosDoProduto){
-        const resultadoCadastro = await pool.query('INSERT INTO produto SET ?', [dadosDoProduto])
-        return resultadoCadastro.insertId
+        const [resultado] = await pool.query('INSERT INTO produto SET ?', [dadosDoProduto]);
+        return resultado.insertId;
     }
+
 
     async atualizarProduto(id, dadosDoProduto){
         const camposProduto = []
         const dadoProduto = []
 
         for (const [key, value] of Object.entries(dadosDoProduto)){
-            camposProduto.push(`${key} = ?`)
-            dadosDoProduto.push(value)
-        }
+        camposProduto.push(`${key} = ?`);
+        dadoProduto.push(value);
+    }
+
 
         if (camposProduto.length === 0) return null
         dadosDoProduto.push(id)

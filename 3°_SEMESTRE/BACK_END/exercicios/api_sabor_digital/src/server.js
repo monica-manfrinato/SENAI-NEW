@@ -1,16 +1,19 @@
-const pool = require('./config/database')
-const app = require('./app')
-const PORT = 3000
+const app = require('./app');
+const pool = require('./config/database');
 
-pool.getConnection((err, connection) =>{
-    if(err){
-        console.error('Erro ao conectar ao banco', err)
-        process.exit(1)
-    }
-    console.log('Conectado ao MySQL!')
-    connection.release()
-})
+const PORT = 3000;
 
-app.listen(PORT, () =>{
-    console.log('🌟 Servidor Rodando! 🌟')
-})
+// Testa a conexão com o banco (opcional)
+(async () => {
+  try {
+    await pool.query('SELECT 1'); // teste simples
+    console.log("✅ Conexão com o banco estabelecida!");
+  } catch (err) {
+    console.error("❌ Erro ao conectar no banco:", err);
+  }
+})();
+
+// Sobe o servidor
+app.listen(PORT, () => {
+  console.log(`🌟 Servidor rodando na porta ${PORT}! 🌟`);
+});
