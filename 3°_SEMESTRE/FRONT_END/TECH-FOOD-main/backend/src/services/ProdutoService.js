@@ -26,15 +26,25 @@ class ProdutoService {
         };
     }
 
-    async cadastrarProduto(dados) {
-        const { nome, descricao, preco, categoria, disponivel } = dados;
+    //CADASTRO DO PRODUTO!!!!
+    async cadastrarProduto(dadosDoProduto){
+        let { nome, descricao, preco, categoria, disponivel, imagem } = dadosDoProduto;
 
-        if (!nome || !descricao || preco === undefined) {
-            throw { status: 400, mensagem: "Nome, descrição e preço são obrigatórios" };
+        // Converte o preço para número
+        preco = parseFloat(preco);
+
+        if (!nome || !descricao || preco === undefined || isNaN(preco)){
+            throw {
+                status: 400,
+                mensagem: 'Nome, descrição e preço são campos obrigatórios!'
+            };
         }
 
-        if (typeof preco !== "number" || preco <= 0) {
-            throw { status: 400, mensagem: "Preço deve ser um número positivo" };
+        if (typeof preco !== 'number' || preco <= 0){
+            throw {
+                status: 400,
+                mensagem: "Preço deve ser um número positivo"
+            };
         }
 
         const novoProduto = {
@@ -42,17 +52,19 @@ class ProdutoService {
             descricao: descricao.trim(),
             preco,
             categoria: categoria || null,
-            disponivel: disponivel ?? true
+            disponivel: disponivel ?? true,
+            imagem
         };
 
-        const id = await ProdutoRepository.create(novoProduto);
+        const resultado = await produtoRepository.cadastrarProduto(novoProduto);
 
         return {
             sucesso: true,
             mensagem: "Produto cadastrado com sucesso",
-            id
+            resultado
         };
     }
+
 
     async atualizarProduto(id, dados) {
         if (!id || isNaN(id)) {
