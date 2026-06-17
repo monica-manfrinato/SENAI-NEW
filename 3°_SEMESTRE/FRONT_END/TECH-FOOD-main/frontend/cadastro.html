@@ -1,395 +1,73 @@
-/* ==========================================================
-   CADASTRO.CSS — Estilos exclusivos da página de cadastro.
-   Depende de global.css (variáveis, header, footer, modais).
-   Estrutura: frontend/src/styles/cadastro.css
-   ========================================================== */
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="src/styles/global.css" />
+    <link rel="stylesheet" href="src/styles/cadastro.css" />
+    <title>TechFood - Cadastro do Prato</title>
+</head>
+<body>
 
-/* ── LAYOUT GERAL DA PÁGINA ─────────────────────────────── */
-#pagina-cadastro {
-  max-width: 680px;
-  margin: 0 auto;
-  padding: 0 16px 40px;
-}
+    <header id="topo-loja">
+      <h1 id="titulo-site">TechFood - Sabor & Saber</h1>
+      <p id="boas-vindas">Carregando...</p>
 
-/* ── CAMPO DE UPLOAD DE ARQUIVO ────────────────────────── */
+      <input type="checkbox" id="bt_menu" />
+      <label for="bt_menu" id="label-menu" aria-label="Abrir menu"
+        >&#9776;</label
+      >
 
-/* Esconde o input nativo */
-#prato-imagem {
-  display: none;
-}
+      <nav id="menu">
+        <ul>
+          <li><a href="index.html">Cardápio</a></li>
+          <li><a href="pedidos.html">Meus Pedidos</a></li>
+          <li><a href="cadastro.html">Cadastrar Prato</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <form id="cadastro" enctype="multipart/form-data">
+        <label for="nome">Nome do Prato:</label>
+        <input type="text" id="nome" name="nome" required>
 
-/* Área clicável customizada */
-#label-upload {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 22px 16px;
-  border: 2px dashed #ccc;
-  border-radius: 10px;
-  background: #fafafa;
-  cursor: pointer;
-  text-align: center;
-  transition:
-    border-color 0.2s,
-    background 0.2s;
-}
+        <label for="descricao">Descrição: </label>
+        <input type="text" id="descricao" name="descricao" required>
 
-#label-upload:hover {
-  border-color: var(--cor-destaque);
-  background: #fff8f4;
-}
+        <label for="preco">Preço: </label>
+        <input type="number" id="preco" name="preco" required>
 
-#label-upload.arquivo-selecionado {
-  border-style: solid;
-  border-color: var(--cor-verde);
-  background: #f4fbf6;
-}
+        <label for="categoria">Categoria: </label>
+        <select name="categoria" id="categoria">
+          <option value="">Selecione...</option>
+          <option value="sobremesa">Sobremesa</option>
+          <option value="pratoPrincipal">Prato Principal</option>
+        </select>
 
-#upload-icone {
-  font-size: 1.8rem;
-  line-height: 1;
-}
+        <p>Está disponível para venda imediata?</p>
+        <input type="radio" id="sim" name="disponivel" value="true">
+        <label for="sim">Sim</label>
 
-#upload-texto {
-  font-size: 0.9rem;
-  font-weight: bold;
-  color: var(--cor-primaria);
-}
+        <input type="radio" id="nao" name="disponivel" value="false">
+        <label for="nao">Não</label>
 
-#upload-subtexto {
-  font-size: 0.75rem;
-  color: #aaa;
-}
+        <!-- Campo para upload de imagem -->
+        <label for="imagem">Imagem do prato:</label>
+        <input type="file" id="imagem" name="imagem" accept="image/*">
 
-/* ── PRÉVIA DA IMAGEM ───────────────────────────────────── */
-#previa-wrapper {
-  display: flex;
-  justify-content: center;
-  margin: 30px 0 20px;
-}
+        <button type="submit">Cadastrar</button>
+      </form>
+    <footer id="rodape">
+      <div class="info-footer">
+        <p><strong>TechFood 2026</strong></p>
+        <p>Escola SENAI Ítalo Bologna - Itu/SP</p>
+        <p>Av. das Nações, 1500</p>
+      </div>
+      <p id="data-hora-footer"></p>
+    </footer>
 
-#previa-imagem {
-  width: 160px;
-  height: 160px;
-  border-radius: 14px;
-  border: 2px dashed #ccc;
-  background: #f9f9f9;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  transition: border-color 0.2s;
-  position: relative;
-}
-
-#previa-imagem.tem-imagem {
-  border-style: solid;
-  border-color: var(--cor-destaque);
-}
-
-#previa-placeholder {
-  text-align: center;
-  color: #bbb;
-  font-size: 0.8rem;
-  line-height: 1.8;
-  pointer-events: none;
-}
-
-#previa-img {
-  display: none;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 12px;
-}
-
-#previa-img.visivel {
-  display: block;
-}
-
-/* ── CARD DO FORMULÁRIO ─────────────────────────────────── */
-#form-cadastro-wrapper {
-  background: #fff;
-  border-radius: 16px;
-  padding: 28px 24px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-}
-
-/* ── GRUPOS DE CAMPO ────────────────────────────────────── */
-.campo-grupo {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 18px;
-}
-
-.campo-grupo label {
-  font-size: 0.85rem;
-  font-weight: bold;
-  color: var(--cor-primaria);
-  margin-bottom: 6px;
-}
-
-.obrigatorio {
-  color: var(--cor-vermelho);
-}
-
-/* ── INPUTS, TEXTAREA E SELECT ──────────────────────────── */
-.campo-grupo input,
-.campo-grupo textarea,
-.campo-grupo select {
-  padding: 0.7rem 0.9rem;
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  color: #333;
-  background: #fafafa;
-  outline: none;
-  transition:
-    border-color 0.15s,
-    background 0.15s;
-  font-family: sans-serif;
-  resize: vertical;
-}
-
-.campo-grupo input:focus,
-.campo-grupo textarea:focus,
-.campo-grupo select:focus {
-  border-color: var(--cor-destaque);
-  background: #fff;
-}
-
-/* Estado de erro */
-.campo-grupo input.campo-invalido,
-.campo-grupo textarea.campo-invalido,
-.campo-grupo select.campo-invalido {
-  border-color: var(--cor-vermelho);
-  background: #fff8f8;
-}
-
-/* Mensagem de erro */
-.msg-erro {
-  font-size: 0.78rem;
-  color: var(--cor-vermelho);
-  margin-top: 4px;
-  min-height: 16px;
-}
-
-/* Contador de caracteres (descrição) */
-.contador-chars {
-  font-size: 0.75rem;
-  color: #aaa;
-  text-align: right;
-  margin-top: 3px;
-}
-
-/* ── BOTÕES DO FORMULÁRIO ───────────────────────────────── */
-.form-acoes {
-  display: flex;
-  gap: 12px;
-  margin-top: 24px;
-}
-
-.btn-primario,
-.btn-secundario {
-  flex: 1;
-  padding: 0.8rem 1rem;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.15s;
-  border: none;
-}
-
-.btn-primario {
-  background: var(--cor-destaque);
-  color: #fff;
-}
-
-.btn-primario:hover {
-  background: #d35400;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(230, 126, 34, 0.35);
-}
-
-.btn-primario:active {
-  transform: translateY(0);
-}
-
-.btn-secundario {
-  background: none;
-  border: 2px solid #ddd;
-  color: #888;
-}
-
-.btn-secundario:hover {
-  border-color: #bbb;
-  background: #f5f5f5;
-  color: #555;
-}
-
-/* ── TOAST DE FEEDBACK ──────────────────────────────────── */
-#toast {
-  position: fixed;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%) translateY(80px);
-  background: var(--cor-primaria);
-  color: #fff;
-  padding: 12px 24px;
-  border-radius: 50px;
-  font-size: 0.9rem;
-  font-weight: bold;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
-  z-index: 300;
-  opacity: 0;
-  transition:
-    transform 0.25s ease,
-    opacity 0.25s ease;
-  white-space: nowrap;
-}
-
-#toast.visivel {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-}
-
-#toast.sucesso {
-  background: var(--cor-verde);
-}
-
-#toast.erro {
-  background: var(--cor-vermelho);
-}
-
-/* ── SEÇÃO DE PRATOS CADASTRADOS ────────────────────────── */
-#secao-pratos-cadastrados {
-  margin-top: 50px;
-}
-
-#msg-lista-vazia {
-  text-align: center;
-  color: #aaa;
-  font-size: 0.9rem;
-  padding: 30px 0;
-}
-
-/* Grade de cards */
-#lista-pratos-cadastrados {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 16px;
-  margin-top: 10px;
-}
-
-/* Card individual */
-.card-prato-cadastrado {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  transition:
-    transform 0.15s,
-    box-shadow 0.15s;
-}
-
-.card-prato-cadastrado:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
-}
-
-.card-prato-img {
-  width: 100%;
-  height: 120px;
-  object-fit: cover;
-  background: #f0f0f0;
-}
-
-.card-prato-img-placeholder {
-  width: 100%;
-  height: 120px;
-  background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2.5rem;
-}
-
-.card-prato-info {
-  padding: 12px 14px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.card-prato-nome {
-  font-weight: bold;
-  color: var(--cor-primaria);
-  font-size: 0.95rem;
-}
-
-.card-prato-categoria {
-  font-size: 0.75rem;
-  color: var(--cor-destaque);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.card-prato-preco {
-  font-size: 1rem;
-  font-weight: bold;
-  color: var(--cor-verde);
-  margin-top: 4px;
-}
-
-.card-prato-descricao {
-  font-size: 0.8rem;
-  color: #888;
-  line-height: 1.4;
-  margin-top: 2px;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-/* Botão remover */
-.btn-remover-prato {
-  margin: 0 14px 12px;
-  padding: 6px;
-  border: none;
-  background: none;
-  color: #ccc;
-  font-size: 0.78rem;
-  cursor: pointer;
-  text-align: left;
-  transition: color 0.15s;
-}
-
-.btn-remover-prato:hover {
-  color: var(--cor-vermelho);
-}
-
-/* ── RESPONSIVO ─────────────────────────────────────────── */
-@media screen and (max-width: 600px) {
-  #form-cadastro-wrapper {
-    padding: 20px 16px;
-  }
-
-  .form-acoes {
-    flex-direction: column;
-  }
-
-  #lista-pratos-cadastrados {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-@media screen and (max-width: 400px) {
-  #lista-pratos-cadastrados {
-    grid-template-columns: 1fr;
-  }
-}
+    <script src="src/scripts/global.js"></script>
+    <script src="src/scripts/api.js"></script>
+    <script src="src/scripts/cadastro.js"></script>
+</body>
+</html>

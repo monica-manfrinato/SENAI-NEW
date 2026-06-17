@@ -11,13 +11,9 @@ class ProdutoRepository {
         return rows[0];
     }
 
-    async create(produtoData) {
-        const { nome, descricao, preco, categoria, disponivel } = produtoData;
-        const [result] = await pool.query(
-            'INSERT INTO produto (nome, descricao, preco, categoria, disponivel) VALUES (?, ?, ?, ?, ?)',
-            [nome, descricao, preco, categoria, disponivel]
-        );
-        return result.insertId;
+    async cadastrarProduto(dadosDoProduto){
+        const [resultado] = await pool.query('INSERT INTO produto SET ?', [dadosDoProduto]);
+        return resultado.insertId;
     }
 
     async update(id, produtoData) {

@@ -40,8 +40,9 @@ class ProdutoController{
             console.log('File:', req.file);
 
             const dadosDoProduto = {
-                ...req.body,        
-                imagem: req.file ? req.file.path : null
+                ...req.body,        //COPIA OS CAMPOS DA REQUISIÇÃO (NOME E TALS)
+                imagem: req.file ? req.file.path : null //ADICIONA O CAMINHO DA IMAGEM AO 'BODY'
+                //SE O USUÁRIO ENVIAR IMAGEM, ELE PEGA O CAMINHO, SE NÃO, DEIXA NULL
             };
 
             const resultado = await ProdutoService.cadastrarProduto(dadosDoProduto);
