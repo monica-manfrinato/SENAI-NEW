@@ -87,3 +87,5 @@ async cadastrar(req, res) {
 }
 
 module.exports = new ProdutoController();
+
+
