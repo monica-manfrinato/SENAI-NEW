@@ -63,3 +63,4 @@ INSERT INTO produto (nome, descricao, preco, categoria, disponivel) VALUES
 
 ALTER TABLE produto ADD COLUMN imagem VARCHAR(255);
 SELECT * from produto;
+DROP DATABASE sabordigital_b;

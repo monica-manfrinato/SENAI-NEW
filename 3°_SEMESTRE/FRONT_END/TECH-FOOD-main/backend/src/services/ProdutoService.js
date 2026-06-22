@@ -56,7 +56,7 @@ class ProdutoService {
             imagem
         };
 
-        const resultado = await produtoRepository.cadastrarProduto(novoProduto);
+        const resultado = await ProdutoRepository.cadastrarProduto(novoProduto);
 
         return {
             sucesso: true,

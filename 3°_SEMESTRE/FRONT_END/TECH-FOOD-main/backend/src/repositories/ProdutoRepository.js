@@ -11,10 +11,22 @@ class ProdutoRepository {
         return rows[0];
     }
 
-    async cadastrarProduto(dadosDoProduto){
-        const [resultado] = await pool.query('INSERT INTO produto SET ?', [dadosDoProduto]);
-        return resultado.insertId;
-    }
+async cadastrarProduto(produto) {
+    const sql = `
+      INSERT INTO produto (nome, descricao, preco, categoria, disponivel, imagem)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `;
+    const params = [
+      produto.nome,
+      produto.descricao,
+      produto.preco,
+      produto.categoria,
+      produto.disponivel,
+      produto.imagem // ← aqui vem "uploads/arquivo.jpg"
+    ];
+    const [resultado] = await pool.query(sql, params);
+    return resultado.insertId;
+}
 
     async update(id, produtoData) {
         const fields = [];
