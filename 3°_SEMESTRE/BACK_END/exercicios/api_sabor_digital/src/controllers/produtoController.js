@@ -58,19 +58,26 @@ class ProdutoController{
 
 
 
-    async atualizarProduto(req,res){
+async atualizarProduto(req, res) {
         try {
-            const resultado = await ProdutoService.atualizarProduto(req.params.id, req.body)
-            res.json(resultado)
+            const dadosDoProduto = {
+                ...req.body
+            };
+
+            if (req.file) {
+                dadosDoProduto.imagem = req.file.path;
+            }
+
+            const resultado = await ProdutoService.atualizarProduto(req.params.id, dadosDoProduto);
+            res.json(resultado);
         } catch (erro) {
             res.status(erro.status || 500).json({
                 sucesso: false,
                 mensagem: erro.mensagem || "Erro interno do servidor",
                 erro: erro.stack || erro
-            })     
+            });
         }
     }
-
 
     async apagarProduto(req,res){
         try {

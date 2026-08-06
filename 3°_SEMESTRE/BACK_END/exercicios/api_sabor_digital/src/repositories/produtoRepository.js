@@ -8,10 +8,10 @@ class ProdutoRepository{ //nome bem direto ___ + Repository
         return rows
     }
 
-    async buscarProdutoPorId(id){
-        const mostrarProduto = await pool.query('SELECT * FROM produto WHERE id = ?', [id])
-        return mostrarProduto[0]
-    }
+    async buscarProdutoPorId(id) {
+    const [mostrarProduto] = await pool.query('SELECT * FROM produto WHERE id = ?', [id]);
+    return mostrarProduto[0]; // <-- O [0] garante que vai retornar o OBJETO direto, não um Array
+}
 
     //CADASTRO DO PRODUTO!!!
     
@@ -21,25 +21,27 @@ class ProdutoRepository{ //nome bem direto ___ + Repository
     }
 
 
-    async atualizarProduto(id, dadosDoProduto){
-        const camposProduto = []
-        const dadoProduto = []
+    async atualizarProduto(id, dadosDoProduto) {
+        const camposProduto = [];
+        const valoresQuery = []; // Nome mais claro para evitar confusão
 
-        for (const [key, value] of Object.entries(dadosDoProduto)){
-        camposProduto.push(`${key} = ?`);
-        dadoProduto.push(value);
+        for (const [key, value] of Object.entries(dadosDoProduto)) {
+            camposProduto.push(`${key} = ?`);
+            valoresQuery.push(value);
+        }
+
+        if (camposProduto.length === 0) return null;
+        
+        // Insere o id no FINAL do array de valores que preencherão os '?' da SQL
+        valoresQuery.push(id); 
+
+        const query = `UPDATE produto SET ${camposProduto.join(', ')} WHERE id = ?`;
+        
+        // Executa com o array de valores correto
+        const [resultado] = await pool.query(query, valoresQuery);
+
+        return resultado.affectedRows;
     }
-
-
-        if (camposProduto.length === 0) return null
-        dadosDoProduto.push(id)
-
-        const query = `UPDATE produto SET ${camposProduto.join(',')} WHERE id = ?`
-        const resultado = await pool.query(query, dadoProduto)
-
-        return resultado.affectedRows
-    }
-
     async apagarProduto(id){
         await pool.query('DELETE FROM produto WHERE id = ? ', [id])
         return true
