@@ -1,3 +1,4 @@
+const path = require('path') // <-- Adicione esta linha
 const express = require('express')
 const app = express()
 const routes = require('./routes')
