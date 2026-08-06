@@ -1,5 +1,5 @@
 -- Script de criação do banco de dados e tabelas - Cantina Bella Vita
-
+DROP DATABASE sabordigital_b;
 -- 1. Criação do Banco de Dados
 CREATE DATABASE IF NOT EXISTS sabordigital_b;
 USE sabordigital_b;
