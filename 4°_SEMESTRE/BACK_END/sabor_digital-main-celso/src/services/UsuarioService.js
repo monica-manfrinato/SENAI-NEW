@@ -1,0 +1,1 @@
+//AQUI VAI FUNCIONAR O JWT (registrar usuario, realiza as validações)
