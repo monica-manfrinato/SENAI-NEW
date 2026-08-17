@@ -1,49 +1,33 @@
-/* ============================================
-   Sabor & Saber — Kickoff Live Code
-   Objetivo: refrescar OO + DOM ANTES de entrar em React.
-
-   Fluxo:
-     1. Definir classe Prato (OO)
-     2. Instanciar objetos
-     3. Selecionar e manipular o DOM
-     4. Adicionar eventos
-   ============================================ */
+/* ==================================================
+   Sabor & Saber — Cardápio dinâmico com Bootstrap
+   
+   Este JS é IGUAL ao da Aula 0 (Kickoff).
+   A diferença: agora usamos classes Bootstrap ao criar
+   cada card, em vez de CSS custom.
+   
+   O foco do 2º semestre inteiro continua sendo JAVASCRIPT.
+   Bootstrap é só a "roupa" que a gente vestiu no HTML/CSS.
+   ================================================== */
 
 
 /* -----------------------------------------------------------
-   PARTE 1 — OO
-   Por que classe e não só um objeto literal ({nome, preco})?
-   Porque com classe temos MÉTODOS (comportamento) junto
-   dos dados, e conseguimos criar MUITOS pratos com o mesmo molde.
+   Classe Prato — igual à Aula 0
    ----------------------------------------------------------- */
 class Prato {
   constructor(nome, preco, categoria) {
-    // `this` aponta pro objeto que está sendo criado agora.
-    // Sem `this`, o valor "some" quando o constructor acaba.
-    this.nome      = nome;
-    this.preco     = preco;
+    this.nome = nome;
+    this.preco = preco;
     this.categoria = categoria;
   }
 
-  // Método porque é uma AÇÃO do prato — ele SABE se formatar.
-  // Formatar preço fora da classe funcionaria, mas espalha lógica.
   formatarPreco() {
     return `R$ ${this.preco.toFixed(2).replace('.', ',')}`;
-  }
-
-  // Método que MUTA o estado interno do prato.
-  // Ex.: promoção de terça-feira.
-  aplicarDesconto(percentual) {
-    this.preco = this.preco * (1 - percentual / 100);
   }
 }
 
 
 /* -----------------------------------------------------------
-   PARTE 2 — Instanciando objetos
-   Aqui simulamos o que virá da API do Back-End no projeto real.
-   Cada `new Prato(...)` é um objeto novo com dados próprios,
-   mas todos compartilham os métodos definidos na classe.
+   Cardápio (mock — em breve virá da API do Back-End)
    ----------------------------------------------------------- */
 const cardapio = [
   new Prato("Feijoada Completa",  42.90, "Prato Principal"),
@@ -51,41 +35,31 @@ const cardapio = [
   new Prato("Coxinha Artesanal",   8.50, "Petisco"),
   new Prato("Brigadeiro Gourmet",  6.00, "Sobremesa"),
   new Prato("Suco de Maracujá",   12.00, "Bebida"),
+  new Prato("Bolinho de Bacalhau", 15.00, "Petisco"),
 ];
-
-// Demonstração no console — mostrar que o método funciona
-console.log("=== Pratos criados ===");
-cardapio.forEach(p => {
-  console.log(`${p.nome} → ${p.formatarPreco()}`);
-});
 
 
 /* -----------------------------------------------------------
-   PARTE 3 — DOM: selecionar e renderizar
-   Aqui vem o "custo" do vanilla JS: cada card é montado
-   manualmente com createElement / innerHTML.
-   Em React, isso vira 3 linhas de JSX.
+   DOM — igual à Aula 0.
+   O que MUDOU: as classes que aplicamos no card agora são
+   utilities Bootstrap (col, p-3, mb-3, bg-white, rounded, shadow).
    ----------------------------------------------------------- */
 
-// Seleção — 1 elemento pelo ID via querySelector (moderno)
 const containerCardapio = document.querySelector('#cardapio');
 
-// Função dedicada para renderizar UM prato → boa prática de organização.
-// Separar em função pequena facilita testar e trocar depois.
 function criarCardPrato(prato) {
-  const card = document.createElement('div');
-  card.className = 'card';
+  // O article absorve as classes de coluna diretamente — sem div wrapper extra.
+  // Bootstrap funciona com qualquer elemento HTML, não só <div>.
+  // article é semanticamente correto: cada prato é um conteúdo independente e reutilizável.
+  const card = document.createElement('article');
+  card.className = 'card-prato p-4 bg-white rounded-xl shadow-sm h-full';
 
-  // Template string: mais legível que concatenar com "+"
   card.innerHTML = `
-    <h3>${prato.nome}</h3>
-    <span class="categoria">${prato.categoria}</span>
-    <div class="preco">${prato.formatarPreco()}</div>
+    <h3 class="">${prato.nome}</h3>
+    <span class="">${prato.categoria}</span>
+    <div class="">${prato.formatarPreco()}</div>
   `;
 
-  /* Evento por card (PARTE 4).
-     ⚠️ Repare: adicionamos DENTRO da função de criação —
-     assim cada card ganha SEU listener no momento em que é criado. */
   card.addEventListener('click', () => {
     alert(
       `🍽️ ${prato.nome}\n\n` +
@@ -97,29 +71,11 @@ function criarCardPrato(prato) {
   return card;
 }
 
-// Renderizar TUDO — loop simples
 function renderizarCardapio() {
-  // Limpar antes de renderizar → evita duplicar em re-render
   containerCardapio.innerHTML = '';
-
   cardapio.forEach(prato => {
-    const card = criarCardPrato(prato);
-    containerCardapio.appendChild(card);
+    containerCardapio.appendChild(criarCardPrato(prato));
   });
 }
 
-// Primeira renderização quando a página carrega
 renderizarCardapio();
-
-
-/* -----------------------------------------------------------
-   BÔNUS para explorar em aula:
-   Rode no console e veja o cardápio se atualizar!
-
-   cardapio[0].aplicarDesconto(20);
-   renderizarCardapio();
-
-   Percebeu? No vanilla você tem que CHAMAR renderizar de novo.
-   No React, atualizar o estado já dispara a re-renderização
-   automaticamente. Isso é o "declarativo" na prática.
-   ----------------------------------------------------------- */
