@@ -1,0 +1,32 @@
+ANOTAÇÕES PROJETOOS
+
+cadastro de item
+entrada - ??? 
+Adicionar todas as requisições e respostas no word seguindo o modelo:
+
+POST 
+/produtos
+
+{
+“Nome_produto”: “Carburador”,
+“Descricao”: “Carburador Fusca Kombi 1500 1600 H30 Original Brosol”,
+“Estoque_minimo”: “12”
+}
+
+
+RESPOSTA (201, CREATED)
+
+{
+“ID_produto”:  ”01”,
+“Nome_produto”: “Carburador”,
+“Descricao”: “Carburador Fusca Kombi 1500 1600 H30 Original Brosol”,
+“Estoque_minimo”: “12”
+}
+
+
+
+=========================================================================================
+EVITANDO CONFLITOS NO GITHUB:
+
+- Duas pessoas editando o mesmo arquivo 
+- criar issues, create a branch dentro da issue

@@ -1,0 +1,37 @@
+ANOTAÇÕES TESTES
+
+Como testar
+Quando testar
+O que testar
+
+Questões norteadoras para o fluxo de testes
+
+Teste de regressão:
+- Quando um código é alterado, testar a funcionalidade ligada a essa alteração é necessário (para conferir se está td funcionando)
+- Garante que novas versões não quebrem algo que já estava funcionando 
+- Ex: para testar o editar comentário é necessário testar os métodos de criar e de excluir
+
+
+Teste de estresse:
+- Testa o sistema em condições extremas, acima do limite normal de uso para ver como ele reage
+- O objetivo é identificar qual é o limite do software
+
+Teste de performance:
+- Mede velocidade, tempo de resposta e uso de recursos (CPU, memoria)do sistema sob uso
+- Aqui o volume é realista, não exagerado como no de estresse
+- Ex: medir quanto tempo uma tela de resultados de busca demora para carregar com uso normal de usuários
+- Pode ser feita a nível unitário (1 elemento) ou de integração (mais módulos ao mesmo tempo)
+
+Teste de recuperação:
+- Verifica como o sistema reage após um problema, uma queda de servidor e tals
+- Os dados são preservados? Sistema retorna de forma segura?
+- É um dos mais importantes, essencial para sistema de vendas por exemplo
+
+Teste de segurança:
+- Verifica se o sistema protege dados e funcionalidades contra acessos não autorizados
+- Utiliza ferramentas para realizar esses testes
+- Testa autenticação, autorização, criptografia e proteção contra invasões
+
+Teste de paralelo:
+-Comparar duas versões do código para garantir que a nova versão mantenha os resultados corretos e/ou remova os problemas antigos
+- Funcionalidades, layout...

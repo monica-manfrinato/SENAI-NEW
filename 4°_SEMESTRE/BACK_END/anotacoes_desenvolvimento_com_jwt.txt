@@ -1,0 +1,55 @@
+BANCO DE DADOS
+Atualizar a tabela de usuários para realizar as edições
+
+REPOSITORY:
+salva as informações de usuário em uma const que será utilizada em outros arquivos
+
+
+SERVICE:
+const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
+
+pega eles dois direto da biblioteca, eles são responsáveis pela criptografização e pela geração do token
+
+inserimos uma chave secreta, que deve vir do .env já q ela é SECRETA!
+const JWT_SECRET = process.env.JWT_SECRET || 'chave_super_secreta_e_tals'
+//pega direto do .env 
+
+criação de registratUsuario:
+- Verifica se está vazio
+- Verificar se um email já existe
+
+Criptografar senha:
+ const salt = await bcrypt.genSalt(10) --> quantas interações dentro do ambiente de criptografia serão necessários para a criação do hash (quanto mais saltos, mais processamento, senha mais complexa. dependendo da ocasião, não compensa exir e consumir tanto do sistema para a proteção, como a segurança de um pedido de restaurante)
+
+gerando o token:
+
+comst token = jwt.sign(
+{ id:usuario.id, email: usuário.email, papel: usuário.papel},
+JWT_SECRET, 
+{expiresIn: '8h', algorithm:'ES256'}
+
+O token expira por segurança, pq se tipo, o token é uma chave e quem pegar ela consegue abrir e tals. ent por isso ele vai recarregando pra garantir
+
+confusão de algoritimos: tipo de ataque
+esse 'algorithm' deve ser enviado caso eu esteja usando uma chave assimétrica (que usa elementos públicos e privados - que o usuário tem acesso e n), porém é mais fácil de decifrar por conter partes publicas 
+
+CONTROLLER:
+IGUAL ---- FEITO!
+
+ROTAS:
+
+novo arquivo: authRoutes.js
+- usa usuário controller
+registrar usuário
+fazer login de usuario
+
+
+nas rotas adicionar dentro do post um 'verificarToken' e 'verificarAdimin' para postar, editar e apagar (métodos puxados do middleware, importado la em cima)
+const {verificarToken, verificarAdimin} = require('../middlewares/authMiddleware)
+O verificar token garante q ele esteja dentro do prazo e tals, se ele existe
+
+
+ARQUIVO DE MIDDLEWARE:	
+
+Estruturação das validações de token e de admin
