@@ -2,21 +2,26 @@ const pool = require('../config/database');
 
 class UsuarioRepository {
 
+    // 1. Requisito: findByEmail(email)
     async findByEmail(email) {
-        const [rows] = await pool.query('SELECT * FROM usuario WHERE email= ?', [email]);
+        const [rows] = await pool.query('SELECT * FROM usuario WHERE email = ?', [email]);
         return rows[0];
     }
 
+    // Método auxilar ajustado (corrigido pedidoRows -> rows)
     async findById(id) {
         const [rows] = await pool.query('SELECT id, nome, email, papel, criado_em FROM usuario WHERE id = ?', [id]);
-        if (pedidoRows.length === 0) return null;
-        return rows[0]
+        if (rows.length === 0) return null;
+        return rows[0];
     }
 
+    // 2. Requisito: create({nome, email, senha, papel})
     async create(usuarioData) {
-        const { nome, email, senha, papel} = usuarioData;
+        const { nome, email, senha, papel } = usuarioData;
+        
+        // Corrigido: tabela trocada de 'produto' para 'usuario'
         const [result] = await pool.query(
-            'INSERT INTO produto (nome, email, senha, papel) VALUES (?, ?, ?, ?)',
+            'INSERT INTO usuario (nome, email, senha, papel) VALUES (?, ?, ?, ?)',
             [nome, email, senha, papel || 'cliente']
         );
         return result.insertId;

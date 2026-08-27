@@ -1,6 +1,36 @@
 const UsuarioService = require('../services/UsuarioService');
 
 class UsuarioController {
+    // Métodos de Autenticação solicitados:
+
+    static async registrar(req, res) {
+        try {
+            const resultado = await UsuarioService.registrar(req.body);
+            res.status(201).json(resultado);
+        } catch (erro) {
+            res.status(erro.status || 500).json({
+                sucesso: false,
+                mensagem: erro.mensagem || "Erro interno do servidor",
+                erro: erro.stack || erro
+            });
+        }
+    }
+
+    static async login(req, res) {
+        try {
+            const resultado = await UsuarioService.login(req.body);
+            res.status(200).json(resultado);
+        } catch (erro) {
+            res.status(erro.status || 401).json({
+                sucesso: false,
+                mensagem: erro.mensagem || "Credenciais inválidas",
+                erro: erro.stack || erro
+            });
+        }
+    }
+
+    // Métodos já existentes do CRUD:
+
     async listar(req, res) {
         try {
             const resultado = await UsuarioService.listarUsuarios();
