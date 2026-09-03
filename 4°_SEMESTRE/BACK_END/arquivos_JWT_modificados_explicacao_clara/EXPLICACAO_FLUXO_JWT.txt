@@ -1,0 +1,76 @@
+================================================================================
+          FLUXO DE EXECUÇÃO DO JWT E CONTROLE DE ACESSO (RBAC)
+================================================================================
+
+--------------------------------------------------------------------------------
+FASE 1: OBTENÇÃO DO TOKEN DE ADMIN (POST /auth/login)
+--------------------------------------------------------------------------------
+(Passo prévio obrigatório: para criar novos usuários, o Administrador precisa logar)
+
+1. CLIENTE (Postman / Front-end)
+   │  Envia: Body JSON com credenciais do Admin { "email", "senha" }
+   ▼
+2. services/UsuarioService.js -> login(...)
+   │  Valida e-mail/senha com bcrypt e assina o token com papel 'admin'
+   ▼
+3. RETORNO DA API: Status 200 OK
+   └─ Resposta: { "sucesso": true, "token": "eyJhbGciOi..." }
+      (O Admin COPIA esse token para autorizar o cadastro de novos usuários)
+
+
+--------------------------------------------------------------------------------
+FASE 2: CADASTRO DE NOVO USUÁRIO (POST /auth/registrar ou /usuarios)
+--------------------------------------------------------------------------------
+*PROTEÇÃO ATIVA: Apenas Administradores Autenticados podem cadastrar!
+
+1. CLIENTE (Postman / Front-end)
+   │  Configuração no Postman:
+   │  - Aba "Authorization" -> Type: "Bearer Token" -> Colar o Token do Admin
+   │  - Aba "Body" -> raw (JSON) -> { "nome", "email", "senha", "papel" }
+   │  
+   │  Ao enviar, o Postman insere automaticamente no Header:
+   │  Authorization: Bearer eyJhbGciOi...
+   ▼
+2. routes/index.js -> routes/authRoutes.js (ou usuarioRoutes.js)
+   │  Intercepta a rota POST de cadastro e aciona a esteira de segurança:
+   ▼
+3. middlewares/authMiddleware.js -> verificarToken(req, res, next)
+   │  - Lê o cabeçalho Authorization (split(' ')[1])
+   │  - Executa jwt.verify(token, JWT_SECRET)
+   │  - Se NÃO enviar o token: Bloqueia com Status 401 Unauthorized
+   │  - Se o token for válido: Injeta req.usuarioPapel = 'admin'
+   ▼
+4. middlewares/authMiddleware.js -> verificarAdmin(req, res, next)
+   │  - Avalia se (req.usuarioPapel === 'admin')
+   │  - Se for 'cliente': Bloqueia com Status 403 Forbidden
+   │  - Se for 'admin': Permite avançar
+   ▼
+5. controllers/UsuarioController.js -> registrar(req, res)
+   │  Repassa os dados do novo usuário para o service
+   ▼
+6. services/UsuarioService.js -> registrarUsuario(dados)
+   │  - Valida se o e-mail já existe (UsuarioRepository.findByEmail)
+   │  - Aplica o hash na senha do novo usuário (bcrypt.hash)
+   │  - Envia para persistência
+   ▼
+7. repositories/UsuarioRepository.js -> create(...)
+   │  Executa: INSERT INTO usuario (nome, email, senha, papel)...
+   ▼
+8. RETORNO AO CLIENTE: Status 201 Created
+   └─ Resposta: { "sucesso": true, "mensagem": "Usuário cadastrado com sucesso", "id": X }
+
+
+--------------------------------------------------------------------------------
+FASE 3: ACESSO A ROTAS PROTEGIDAS DO SISTEMA (Ex: POST /produtos)
+--------------------------------------------------------------------------------
+
+1. CLIENTE (Postman / Front-end)
+   │  - Aba "Authorization" -> Type: "Bearer Token" -> Colar o Token de Admin
+   │  - Envia a requisição no endpoint protegido
+   ▼
+2. middlewares/authMiddleware.js
+   │  - verificarToken: Valida a assinatura do JWT enviado
+   │  - verificarAdmin: Confirma o acesso administrativo
+   ▼
+3. Controller / Banco de Dados
+   └─ Executa a ação (ex: cadastrar produto) e retorna o resultado.

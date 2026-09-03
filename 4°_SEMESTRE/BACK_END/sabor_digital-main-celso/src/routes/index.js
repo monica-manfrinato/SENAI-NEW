@@ -5,7 +5,7 @@ const produtoRoutes = require('./produtoRoutes');
 const cardapioRoutes = require('./cardapioRoutes');
 const pedidoRoutes = require('./pedidoRoutes');
 const authRoutes = require('./authRoutes');
-const usuarioRoutes = require('./usuarioRoutes');
+// const usuarioRoutes = require('./usuarioRoutes');
 
 // Rota base (Root endpoint)
 router.get('/', (req, res) => {
@@ -18,7 +18,7 @@ router.get('/', (req, res) => {
 
 // Registrar domínios de rotas
 router.use('/auth', authRoutes);
-router.use('/usuarios', usuarioRoutes);
+// router.use('/usuarios', usuarioRoutes);
 router.use('/produtos', produtoRoutes);
 router.use('/cardapios', cardapioRoutes);
 router.use('/pedidos', pedidoRoutes);

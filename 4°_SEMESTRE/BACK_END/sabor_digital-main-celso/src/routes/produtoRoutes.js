@@ -3,10 +3,16 @@ const router = express.Router();
 const ProdutoController = require('../controllers/ProdutoController');
 const upload = require('../config/multer');
 
+// Importação dos middlewares de autenticação
+const { verificarToken, verificarAdmin } = require('../middlewares/authMiddleware');
+
+// Rotas públicas (qualquer pessoa visualiza o cardápio)
 router.get('/', ProdutoController.listar);
 router.get('/:id', ProdutoController.buscarPorId);
-router.post('/', upload.single('imagem'), ProdutoController.cadastrar);
-router.put('/:id', upload.single('imagem'), ProdutoController.atualizar);
-router.delete('/:id', ProdutoController.deletar);
+
+// Rotas protegidas (exigem login e permissão de admin)
+router.post('/', verificarToken, verificarAdmin, upload.single('imagem'), ProdutoController.cadastrar);
+router.put('/:id', verificarToken, verificarAdmin, upload.single('imagem'), ProdutoController.atualizar);
+router.delete('/:id', verificarToken, verificarAdmin, ProdutoController.deletar);
 
 module.exports = router;
