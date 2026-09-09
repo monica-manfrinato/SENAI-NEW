@@ -1,0 +1,70 @@
+/* ==========================================================
+   CADASTRO.CSS — Estilos da página de Cadastro (cadastro.html)
+   Aula 9: formulário de cadastro de pratos
+   ========================================================== */
+
+/* ── Container principal ─────────────────────────────────── */
+form#cadastro {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 30px 20px;
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+}
+
+/* ── Labels ──────────────────────────────────────────────── */
+form#cadastro label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: bold;
+  color: #502c4a;
+}
+
+/* ── Inputs e selects ────────────────────────────────────── */
+form#cadastro input,
+form#cadastro select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+form#cadastro input[type="radio"] {
+  width: auto;
+  margin-right: 6px;
+}
+
+/* ── Botão principal ─────────────────────────────────────── */
+form#cadastro button {
+  background: #2c3e50;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+form#cadastro button:hover {
+  background: #e67e22;
+}
+
+/* ── Texto auxiliar ──────────────────────────────────────── */
+form#cadastro p {
+  margin: 10px 0 6px;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+/* ── Responsivo ──────────────────────────────────────────── */
+@media (max-width: 600px) {
+  form#cadastro {
+    padding: 20px 15px;
+  }
+}

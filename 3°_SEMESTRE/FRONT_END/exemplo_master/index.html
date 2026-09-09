@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>SUPER Playground DOM</title>
+  <link rel="stylesheet" href="src/styles/styles.css">
+</head>
+<body>
+
+<h1>🔥 Playground COMPLETO de Eventos DOM</h1>
+
+<section id="perfil">
+  <h2>👤 Perfil</h2>
+  <div id="container-perfil">
+    <img id="foto-perfil" width="80">
+    <p id="nome-usuario"></p>
+    <span id="badge-status"></span>
+  </div>
+</section>
+
+<section>
+  <h2>🛒 Pedido (Input + cálculo)</h2>
+  <input type="number" id="inputQtd" placeholder="Quantidade">
+  <p id="precoTexto">R$0.00</p>
+</section>
+
+<section id="secao_massas">
+  <h2>🍝 Massas</h2>
+  <button class="bt_pedido">Pedir Macarrão</button>
+  <button class="bt_pedido">Pedir Lasanha</button>
+</section>
+
+<section>
+  <h2>❤️ Curtidas</h2>
+  <button id="btn-curtir">Curtir</button>
+  <p>Likes: <span id="contador">0</span></p>
+</section>
+<section>
+  <h2>⌨️ Input + Preview</h2>
+  <input id="campo-texto" placeholder="Digite...">
+  <p id="preview-texto">Digitando:</p>
+</section>
+
+<section>
+  <h2>🎨 Mouse</h2>
+  <div id="caixa-cor">Passe o mouse</div>
+</section>
+
+<section>
+  <button id="btn-reset">🔄 Resetar tudo</button>
+</section>
+
+<section id="secao-teclado">
+  <h2>⌨️ Teclado</h2>
+  <input id="input-teclado" placeholder="Digite algo...">
+  <p id="log-teclado">Eventos de teclado aparecerão aqui.</p>
+</section>
+
+<section id="secao-formulario">
+  <h2>📝 Formulário</h2>
+  <input id="input-form" placeholder="Mude e clique fora...">
+  <p id="log-form">Eventos de form aparecerão aqui.</p>
+</section>
+
+<section id="secao-mouse-extra">
+  <h2>🐭 Mouse Extra</h2>
+  <div id="caixa-dblclick">Clique duplo aqui</div>
+  <p id="log-mouse">Eventos de mouse aparecerão aqui.</p>
+</section>
+
+<section id="secao-drag">
+  <h2>🎯 Drag and Drop</h2>
+  <div id="drag-item" draggable="true">Arraste-me!</div>
+  <div id="drop-zone">Solte aqui</div>
+  <p id="log-drag">Eventos de drag aparecerão aqui.</p>
+</section>
+
+<script src="src/scripts/script.js"></script>
+</body>
+</html>
