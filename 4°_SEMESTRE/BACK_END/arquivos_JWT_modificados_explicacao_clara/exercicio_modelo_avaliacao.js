@@ -16,10 +16,11 @@ router.delete('/:id', verificarToken, verificarAdmin, ProdutoController.deletar)
 
 module.exports = router; 
 
-// NOME ARQUIVO:
-// CAMINHO DA PASTA:
-// CAMADA/FUNÇÃO:
+// NOME ARQUIVO: produtoRoutes
+// CAMINHO DA PASTA: src/routes/produtoRoutes
+// CAMADA/FUNÇÃO: Informa as rotas de CRUD de produtos, agora adicionando as exigencias de verificação de token e de adimin dependendo da ação
 
+//RESPOSTA IDEAL: Função: Mapeia os endpoints HTTP (GET, POST, DELETE) para o recurso de produtos e aplica a esteira de segurança com os middlewares verificarToken e verificarAdmin nas ações restritas
  
 
 // ========================================== BLOCO 2  ========================================== 
@@ -46,10 +47,11 @@ class UsuarioRepository {
 
 module.exports = new UsuarioRepository(); 
 
- // NOME ARQUIVO:
-// CAMINHO DA PASTA:
-// CAMADA/FUNÇÃO:
+ // NOME ARQUIVO: usuarioRepository
+// CAMINHO DA PASTA: src/repositories/usuarioRepository
+// CAMADA/FUNÇÃO: É responsável pela persistencia, salvando os dados recebidos no banco
 
+//RESPOSTA IDEAL:  Comunica-se diretamente com o banco de dados executando instruções SQL (SELECT para buscar por e-mail e INSERT para cadastrar novos registros)
 
 // ========================================== BLOCO 3  ========================================== 
 
@@ -60,9 +62,13 @@ DB_NAME=sabordigital_celso
 DB_PORT=3306 
 JWT_SECRET='k9mP2$vX8@zQ5!wL3%dN7&sB4*fY6-hJ1' 
 
-// NOME ARQUIVO:
-// CAMINHO DA PASTA:
-// CAMADA/FUNÇÃO: 
+// NOME ARQUIVO: .env
+// CAMINHO DA PASTA: mesmo nível do src
+// CAMADA/FUNÇÃO: Responsável por armazenar os valores de identificação do banco, além da chave secreta do middleware (corrige se estiver errado isso pfv)
+
+//RESPOSTA IDEAL:Armazena dados sensíveis e credenciais do ambiente (conexão com o MySQL e segredo de criptografia do JWT), impedindo que senhas e chaves fiquem expostas diretamente no código-fonte.
+
+
 
 // ========================================== BLOCO 4  ========================================== 
 
@@ -86,10 +92,11 @@ class UsuarioController {
 
 module.exports = new UsuarioController(); 
 
-// NOME ARQUIVO:
-// CAMINHO DA PASTA:
-// CAMADA/FUNÇÃO:
+// NOME ARQUIVO: usuarioController
+// CAMINHO DA PASTA: src/controllers/usuarioController
+// CAMADA/FUNÇÃO: Responsável pelo try catch, recebendo a resposta da validação feita pelo service e enviando o res correto para o front
  
+//RESPOSTA IDEAL: Recebe as requisições HTTP do cliente (req.body), delega a lógica de autenticação ao UsuarioService e devolve a resposta HTTP adequada (res.status(200) para sucesso ou o bloco catch tratando exceções)
  
 // ========================================== BLOCO 5  ========================================== 
 
@@ -125,9 +132,29 @@ const verificarAdmin = (req, res, next) => {
 
 module.exports = { verificarToken, verificarAdmin }; 
 
-// NOME ARQUIVO:
-// CAMINHO DA PASTA:
-// CAMADA/FUNÇÃO:
+// NOME ARQUIVO: authMiddleware
+// CAMINHO DA PASTA: src/middleware/authMiddleware
+// CAMADA/FUNÇÃO: é responsável pelas validações de token e de admin (é isso? explica melhor pfv)
+
+//RESPOSTA IDEAL:
+
+// FUNCIONAMENTO DA ESTEIRA DE SEGURANÇA
+
+// 1. verificarToken (Garante a Identidade / Status 401)
+// ----------------------------------------------------------------------
+// - Lê o cabeçalho Authorization enviado na requisição HTTP.
+// - Se o cabeçalho não existir, interrompe o fluxo e bloqueia a requisição devolvendo o status 401 (Unauthorized).
+// - Extrai o código do token utilizando split(' ') para separar da palavra Bearer.
+// - Utiliza jwt.verify(token, JWT_SECRET) para conferir a assinatura e o prazo de validade.
+// - Se o token for falso ou expirado, o bloco catch captura e retorna 401 (Unauthorized).
+// - Se o token for válido, pega a informação do papel do usuário e injeta diretamente na requisição (req.usuarioPapel = decodificado.usuarioPapel), chamando next() para prosseguir.
+
+// 2. verificarAdmin (Garante a Permissão / Status 403)
+// ----------------------------------------------------------------------
+// - Deve ser colocado na rota sempre após o verificarToken.
+// - Checa a propriedade req.usuarioPapel que foi injetada no passo anterior.
+// - Se a propriedade for diferente de 'admin' (por exemplo, 'cliente'), bloqueia a ação devolvendo o status 403 (Forbidden).
+// - Se for 'admin', chama o next() e autoriza a requisição a chegar ao controller.
 
 
 // ========================================== BLOCO 6  ========================================== 
@@ -156,6 +183,14 @@ class UsuarioService {
 
 module.exports = new UsuarioService(); 
 
-// NOME ARQUIVO:
-// CAMINHO DA PASTA:
-// CAMADA/FUNÇÃO:
+// NOME ARQUIVO: usuarioService
+// CAMINHO DA PASTA: src/services/usuarioService
+// CAMADA/FUNÇÃO: realiza as validações e regras de negócio, pega od dados do repository e valida
+
+//RESPOSTA IDEAL:
+
+// Função: Orquestra o fluxo de autenticação do usuário realizando três etapas cruciais:
+
+// 1. Busca os dados: Consulta o banco de dados chamando UsuarioRepository.findByEmail(dados.email) para verificar se a conta existe.
+// 2. Valida a credencial: Compara a senha informada no login com a senha criptografada armazenada no banco através do método bcrypt.compare.
+// 3. Gera o acesso: Emite o token de acesso gerando e assinando o JWT com jwt.sign, definindo o payload com o id e o papel do usuário, o tempo de expiração e a chave secreta (JWT_SECRET).

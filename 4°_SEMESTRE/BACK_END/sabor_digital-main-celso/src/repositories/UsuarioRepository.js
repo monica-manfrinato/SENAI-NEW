@@ -19,7 +19,6 @@ class UsuarioRepository {
     async create(usuarioData) {
         const { nome, email, senha, papel } = usuarioData;
         
-        // Corrigido: tabela trocada de 'produto' para 'usuario'
         const [result] = await pool.query(
             'INSERT INTO usuario (nome, email, senha, papel) VALUES (?, ?, ?, ?)',
             [nome, email, senha, papel || 'cliente']

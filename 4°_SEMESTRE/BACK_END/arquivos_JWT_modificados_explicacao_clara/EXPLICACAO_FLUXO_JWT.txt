@@ -74,3 +74,65 @@ FASE 3: ACESSO A ROTAS PROTEGIDAS DO SISTEMA (Ex: POST /produtos)
    ▼
 3. Controller / Banco de Dados
    └─ Executa a ação (ex: cadastrar produto) e retorna o resultado.
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+GUIA DE ESTUDO - AVALIAÇÃO DE BACKEND (JWT, RBAC & CAMADAS MVC)
+================================================================================
+
+1. GUIA DE IDENTIFICAÇÃO RÁPIDA (GATILHOS DE CÓDIGO)
+--------------------------------------------------------------------------------
+[Se o trecho tiver...]                 [Pertence ao arquivo...]   [Pasta / Camada]
+--------------------------------------------------------------------------------
+- DB_HOST=..., JWT_SECRET=...          -> .env                    -> ./ (Raiz / Configuração)
+- pool.query('SELECT...'), INSERT INTO -> UsuarioRepository.js    -> src/repositories/ (Repository)
+- bcrypt.hash, bcrypt.compare, jwt.sign -> UsuarioService.js       -> src/services/ (Service)
+- req.body, res.status(200).json, try/catch -> UsuarioController.js -> src/controllers/ (Controller)
+- req.headers.authorization, jwt.verify, next() -> authMiddleware.js -> src/middlewares/ (Middleware)
+- express.Router(), router.post('/login'...) -> authRoutes.js     -> src/routes/ (Rotas)
+--------------------------------------------------------------------------------
+
+2. RESUMO DAS CAMADAS E CONVENÇÕES DE NOMENCLATURA
+--------------------------------------------------------------------------------
+- src/config/          -> Configuração (conexão com BD, variáveis de ambiente).
+- src/repositories/    -> Repository (consultas SQL e persistência de dados).
+- src/services/        -> Service (regras de negócio, bcrypt e emissão de JWT).
+- src/controllers/     -> Controller (recebe req, aciona o service, retorna res HTTP).
+- src/middlewares/     -> Middleware (intercepta req, valida token JWT e permissões).
+- src/routes/          -> Rotas (mapeia endpoints HTTP para controllers/middlewares).
+
+3. DICAS FINAIS E PONTOS-CHAVE PARA A PROVA
+--------------------------------------------------------------------------------
+• Verificação de Senha:
+  Realizada no UsuarioService.js utilizando bcrypt.compare(senhaDigitada, usuario.senha).
+
+• Extração e Leitura do Token JWT:
+  No authMiddleware.js, o token é lido do cabeçalho 'Authorization' e extraído com:
+  const authHeader = req.headers.authorization;
+  const token = authHeader.split(' ')[1]; // Remove a palavra 'Bearer ' e pega o código.
+
+• Validação do Token e Injeção de Dados:
+  O método jwt.verify(token, JWT_SECRET) valida a assinatura do token. Se for válido, 
+  o papel do usuário é injetado na requisição (req.usuarioPapel = decodificado.papel) e 
+  chamado o next().
+
+• Diferença entre Status HTTP de Erro:
+  - Status 401 (Unauthorized): Ausência de token, token inválido/expirado ou e-mail/senha incorretos.
+  - Status 403 (Forbidden): Usuário autenticado, porém sem autorização de perfil para a ação (ex: 'cliente' tentando executar ação de 'admin').
+
+• Sequência de Middlewares nas Rotas Protegidas:
+  O verificarToken deve SEMPRE anteceder o verificarAdmin na declaração da rota.
+  Exemplo: router.post('/', verificarToken, verificarAdmin, ProdutoController.cadastrar);
+
+• Assinatura e Validade do Token:
+  Criado no UsuarioService.js via jwt.sign({ id, papel }, JWT_SECRET, { expiresIn: '1h' }).
+================================================================================
