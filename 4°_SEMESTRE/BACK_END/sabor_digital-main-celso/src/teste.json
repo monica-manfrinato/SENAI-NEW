@@ -1,0 +1,503 @@
+{
+	"openapi": "3.0.3",
+	"info": {
+		"title": "API SaborDigital",
+		"description": "API de autenticação, produtos, cardápios e pedidos da aplicação SaborDigital.",
+		"version": "1.0.0"
+	},
+	"servers": [
+		{
+			"url": "http://localhost:3000",
+			"description": "Servidor local"
+		}
+	],
+	"tags": [
+		{ "name": "Geral", "description": "Informações básicas da API" },
+		{ "name": "Autenticação", "description": "Registro e login de usuários" },
+		{ "name": "Produtos", "description": "Consulta e administração de produtos" },
+		{ "name": "Cardápios", "description": "Gerenciamento de cardápios" },
+		{ "name": "Pedidos", "description": "Criação e acompanhamento de pedidos" }
+	],
+	"paths": {
+		"/": {
+			"get": {
+				"tags": ["Geral"],
+				"summary": "Verifica se a API está funcionando",
+				"responses": {
+					"200": {
+						"description": "API disponível",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/StatusApi" }
+							}
+						}
+					}
+				}
+			}
+		},
+		"/auth/registrar": {
+			"post": {
+				"tags": ["Autenticação"],
+				"summary": "Registra um usuário",
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": { "$ref": "#/components/schemas/RegistroUsuario" }
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "Usuário cadastrado",
+						"content": { "application/json": { "schema": { "$ref": "#/components/schemas/ResultadoCadastro" } } }
+					},
+					"400": { "$ref": "#/components/responses/ErroRequisicao" },
+					"500": { "$ref": "#/components/responses/ErroServidor" }
+				}
+			}
+		},
+		"/auth/login": {
+			"post": {
+				"tags": ["Autenticação"],
+				"summary": "Autentica um usuário e retorna um JWT",
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": { "$ref": "#/components/schemas/Login" }
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Login realizado",
+						"content": { "application/json": { "schema": { "$ref": "#/components/schemas/ResultadoLogin" } } }
+					},
+					"401": { "$ref": "#/components/responses/ErroNaoAutorizado" }
+				}
+			}
+		},
+		"/produtos": {
+			"get": {
+				"tags": ["Produtos"],
+				"summary": "Lista os produtos",
+				"responses": {
+					"200": {
+						"description": "Lista de produtos",
+						"content": { "application/json": { "schema": { "$ref": "#/components/schemas/ListaProdutos" } } }
+					},
+					"500": { "$ref": "#/components/responses/ErroServidor" }
+				}
+			},
+			"post": {
+				"tags": ["Produtos"],
+				"summary": "Cadastra um produto",
+				"description": "Requer token JWT de administrador. O campo imagem é opcional.",
+				"security": [{ "bearerAuth": [] }],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"multipart/form-data": {
+							"schema": { "$ref": "#/components/schemas/ProdutoForm" }
+						}
+					}
+				},
+				"responses": {
+					"201": { "description": "Produto cadastrado", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ResultadoCadastro" } } } },
+					"400": { "$ref": "#/components/responses/ErroRequisicao" },
+					"401": { "$ref": "#/components/responses/ErroNaoAutorizado" },
+					"403": { "$ref": "#/components/responses/ErroProibido" },
+					"500": { "$ref": "#/components/responses/ErroServidor" }
+				}
+			}
+		},
+		"/produtos/{id}": {
+			"parameters": [{ "$ref": "#/components/parameters/Id" }],
+			"get": {
+				"tags": ["Produtos"],
+				"summary": "Busca um produto pelo ID",
+				"responses": {
+					"200": { "description": "Produto encontrado", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ProdutoResultado" } } } },
+					"400": { "$ref": "#/components/responses/ErroRequisicao" },
+					"404": { "$ref": "#/components/responses/ErroNaoEncontrado" }
+				}
+			},
+			"put": {
+				"tags": ["Produtos"],
+				"summary": "Atualiza um produto",
+				"description": "Requer token JWT de administrador. Todos os campos são opcionais, mas pelo menos um deve ser enviado.",
+				"security": [{ "bearerAuth": [] }],
+				"requestBody": {
+					"required": true,
+					"content": { "multipart/form-data": { "schema": { "$ref": "#/components/schemas/ProdutoAtualizacaoForm" } } }
+				},
+				"responses": {
+					"200": { "description": "Produto atualizado", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MensagemSucesso" } } } },
+					"400": { "$ref": "#/components/responses/ErroRequisicao" },
+					"401": { "$ref": "#/components/responses/ErroNaoAutorizado" },
+					"403": { "$ref": "#/components/responses/ErroProibido" },
+					"404": { "$ref": "#/components/responses/ErroNaoEncontrado" }
+				}
+			},
+			"delete": {
+				"tags": ["Produtos"],
+				"summary": "Exclui um produto",
+				"security": [{ "bearerAuth": [] }],
+				"responses": {
+					"200": { "description": "Produto excluído", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MensagemSucesso" } } } },
+					"400": { "$ref": "#/components/responses/ErroRequisicao" },
+					"401": { "$ref": "#/components/responses/ErroNaoAutorizado" },
+					"403": { "$ref": "#/components/responses/ErroProibido" },
+					"404": { "$ref": "#/components/responses/ErroNaoEncontrado" }
+				}
+			}
+		},
+		"/cardapios": {
+			"get": {
+				"tags": ["Cardápios"],
+				"summary": "Lista os cardápios",
+				"responses": {
+					"200": { "description": "Lista de cardápios", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ListaCardapios" } } } },
+					"500": { "$ref": "#/components/responses/ErroServidor" }
+				}
+			},
+			"post": {
+				"tags": ["Cardápios"],
+				"summary": "Cadastra um cardápio",
+				"requestBody": {
+					"required": true,
+					"content": { "application/json": { "schema": { "$ref": "#/components/schemas/CardapioEntrada" } } }
+				},
+				"responses": {
+					"201": { "description": "Cardápio cadastrado", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ResultadoCadastro" } } } },
+					"400": { "$ref": "#/components/responses/ErroRequisicao" },
+					"404": { "$ref": "#/components/responses/ErroNaoEncontrado" }
+				}
+			}
+		},
+		"/cardapios/{id}": {
+			"parameters": [{ "$ref": "#/components/parameters/Id" }],
+			"get": {
+				"tags": ["Cardápios"],
+				"summary": "Busca um cardápio pelo ID",
+				"responses": {
+					"200": { "description": "Cardápio encontrado", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CardapioResultado" } } } },
+					"400": { "$ref": "#/components/responses/ErroRequisicao" },
+					"404": { "$ref": "#/components/responses/ErroNaoEncontrado" }
+				}
+			},
+			"delete": {
+				"tags": ["Cardápios"],
+				"summary": "Exclui um cardápio",
+				"responses": {
+					"200": { "description": "Cardápio excluído", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MensagemSucesso" } } } },
+					"400": { "$ref": "#/components/responses/ErroRequisicao" },
+					"404": { "$ref": "#/components/responses/ErroNaoEncontrado" }
+				}
+			}
+		},
+		"/pedidos": {
+			"get": {
+				"tags": ["Pedidos"],
+				"summary": "Lista os pedidos",
+				"responses": {
+					"200": { "description": "Lista de pedidos", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Pedido" } } } } },
+					"500": { "$ref": "#/components/responses/ErroServidor" }
+				}
+			},
+			"post": {
+				"tags": ["Pedidos"],
+				"summary": "Cria um pedido",
+				"description": "O total e o status inicial são calculados pela API.",
+				"requestBody": {
+					"required": true,
+					"content": { "application/json": { "schema": { "$ref": "#/components/schemas/PedidoEntrada" } } }
+				},
+				"responses": {
+					"201": { "description": "Pedido criado", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/PedidoCriado" } } } },
+					"400": { "$ref": "#/components/responses/ErroRequisicao" }
+				}
+			}
+		},
+		"/pedidos/{id}": {
+			"parameters": [{ "$ref": "#/components/parameters/Id" }],
+			"get": {
+				"tags": ["Pedidos"],
+				"summary": "Busca um pedido pelo ID",
+				"responses": {
+					"200": { "description": "Pedido encontrado", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Pedido" } } } },
+					"404": { "$ref": "#/components/responses/ErroNaoEncontrado" }
+				}
+			},
+			"delete": {
+				"tags": ["Pedidos"],
+				"summary": "Exclui um pedido",
+				"responses": {
+					"200": { "description": "Pedido excluído", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MensagemSucesso" } } } },
+					"400": { "$ref": "#/components/responses/ErroRequisicao" },
+					"404": { "$ref": "#/components/responses/ErroNaoEncontrado" }
+				}
+			}
+		},
+		"/pedidos/{id}/status": {
+			"parameters": [{ "$ref": "#/components/parameters/Id" }],
+			"patch": {
+				"tags": ["Pedidos"],
+				"summary": "Atualiza o status de um pedido",
+				"requestBody": {
+					"required": true,
+					"content": { "application/json": { "schema": { "$ref": "#/components/schemas/StatusPedidoEntrada" } } }
+				},
+				"responses": {
+					"200": { "description": "Status atualizado", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/PedidoAtualizado" } } } },
+					"400": { "$ref": "#/components/responses/ErroRequisicao" },
+					"404": { "$ref": "#/components/responses/ErroNaoEncontrado" }
+				}
+			}
+		}
+	},
+	"components": {
+		"securitySchemes": {
+			"bearerAuth": {
+				"type": "http",
+				"scheme": "bearer",
+				"bearerFormat": "JWT"
+			}
+		},
+		"parameters": {
+			"Id": {
+				"name": "id",
+				"in": "path",
+				"required": true,
+				"description": "Identificador numérico do recurso",
+				"schema": { "type": "integer", "format": "int64", "minimum": 1 }
+			}
+		},
+		"schemas": {
+			"StatusApi": {
+				"type": "object",
+				"properties": {
+					"mensagem": { "type": "string", "example": "API SaborDigital funcionando" },
+					"versao": { "type": "string", "example": "1.0.0" },
+					"arquitetura": { "type": "string", "example": "MVC + SOLID (Refatorada)" }
+				}
+			},
+			"RegistroUsuario": {
+				"type": "object",
+				"required": ["nome", "email", "senha"],
+				"properties": {
+					"nome": { "type": "string", "example": "Administrador" },
+					"email": { "type": "string", "format": "email", "example": "admin@sabordigital.com" },
+					"senha": { "type": "string", "format": "password", "minLength": 6, "example": "123456" },
+					"papel": { "type": "string", "enum": ["cliente", "admin"], "default": "cliente" }
+				}
+			},
+			"Login": {
+				"type": "object",
+				"required": ["email", "senha"],
+				"properties": {
+					"email": { "type": "string", "format": "email", "example": "admin@sabordigital.com" },
+					"senha": { "type": "string", "format": "password", "example": "123456" }
+				}
+			},
+			"Usuario": {
+				"type": "object",
+				"properties": {
+					"id": { "type": "integer", "example": 1 },
+					"nome": { "type": "string", "example": "Administrador" },
+					"email": { "type": "string", "format": "email", "example": "admin@sabordigital.com" },
+					"papel": { "type": "string", "enum": ["cliente", "admin"], "example": "admin" }
+				}
+			},
+			"ResultadoCadastro": {
+				"type": "object",
+				"properties": {
+					"sucesso": { "type": "boolean", "example": true },
+					"mensagem": { "type": "string", "example": "Cadastro realizado com sucesso" },
+					"id": { "type": "integer", "example": 1 }
+				}
+			},
+			"ResultadoLogin": {
+				"type": "object",
+				"properties": {
+					"sucesso": { "type": "boolean", "example": true },
+					"mensagem": { "type": "string", "example": "Login realizado com sucesso" },
+					"token": { "type": "string", "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." },
+					"usuario": { "$ref": "#/components/schemas/Usuario" }
+				}
+			},
+			"Produto": {
+				"type": "object",
+				"properties": {
+					"id": { "type": "integer", "example": 1 },
+					"nome": { "type": "string", "example": "Espaguete à Bolonhesa" },
+					"descricao": { "type": "string", "example": "Massa com molho de tomate e carne moída" },
+					"preco": { "type": "number", "format": "double", "example": 35.5 },
+					"categoria": { "type": "string", "nullable": true, "example": "Massa" },
+					"imagem": { "type": "string", "nullable": true, "example": "/public/uploads/produtos/espaguete.jpg" },
+					"disponivel": { "type": "boolean", "example": true },
+					"criado_em": { "type": "string", "format": "date-time" },
+					"atualizado_em": { "type": "string", "format": "date-time" }
+				}
+			},
+			"ProdutoForm": {
+				"type": "object",
+				"required": ["nome", "descricao", "preco"],
+				"properties": {
+					"nome": { "type": "string", "example": "Espaguete à Bolonhesa" },
+					"descricao": { "type": "string", "example": "Massa com molho de tomate e carne moída" },
+					"preco": { "type": "number", "format": "double", "minimum": 0.01, "example": 35.5 },
+					"categoria": { "type": "string", "example": "Massa" },
+					"disponivel": { "type": "boolean", "default": true },
+					"imagem": { "type": "string", "format": "binary" }
+				}
+			},
+			"ProdutoAtualizacaoForm": {
+				"type": "object",
+				"properties": {
+					"nome": { "type": "string", "example": "Espaguete à Bolonhesa" },
+					"descricao": { "type": "string", "example": "Massa com molho de tomate e carne moída" },
+					"preco": { "type": "number", "format": "double", "minimum": 0.01, "example": 35.5 },
+					"categoria": { "type": "string", "example": "Massa" },
+					"disponivel": { "type": "boolean", "example": false },
+					"imagem": { "type": "string", "format": "binary" }
+				}
+			},
+			"ProdutoResultado": {
+				"type": "object",
+				"properties": {
+					"sucesso": { "type": "boolean", "example": true },
+					"dados": { "$ref": "#/components/schemas/Produto" }
+				}
+			},
+			"ListaProdutos": {
+				"type": "object",
+				"properties": {
+					"sucesso": { "type": "boolean", "example": true },
+					"dados": { "type": "array", "items": { "$ref": "#/components/schemas/Produto" } },
+					"total": { "type": "integer", "example": 4 }
+				}
+			},
+			"CardapioEntrada": {
+				"type": "object",
+				"required": ["nome", "produtos"],
+				"properties": {
+					"nome": { "type": "string", "example": "Cardápio executivo" },
+					"descricao": { "type": "string", "nullable": true, "example": "Opções do dia" },
+					"disponivel": { "type": "boolean", "default": true },
+					"produtos": { "type": "array", "minItems": 1, "items": { "type": "integer", "minimum": 1 }, "example": [1, 2, 3] }
+				}
+			},
+			"Cardapio": {
+				"type": "object",
+				"properties": {
+					"id": { "type": "integer", "example": 1 },
+					"nome": { "type": "string", "example": "Cardápio executivo" },
+					"descricao": { "type": "string", "nullable": true },
+					"disponivel": { "type": "boolean", "example": true },
+					"produtos": { "type": "array", "items": { "$ref": "#/components/schemas/Produto" } }
+				}
+			},
+			"CardapioResultado": {
+				"type": "object",
+				"properties": {
+					"sucesso": { "type": "boolean", "example": true },
+					"dados": { "$ref": "#/components/schemas/Cardapio" }
+				}
+			},
+			"ListaCardapios": {
+				"type": "object",
+				"properties": {
+					"sucesso": { "type": "boolean", "example": true },
+					"dados": { "type": "array", "items": { "$ref": "#/components/schemas/Cardapio" } },
+					"total": { "type": "integer", "example": 1 }
+				}
+			},
+			"PedidoEntrada": {
+				"type": "object",
+				"required": ["itens"],
+				"properties": {
+					"cliente": { "type": "string", "nullable": true, "example": "João da Silva" },
+					"itens": {
+						"type": "array",
+						"minItems": 1,
+						"items": { "$ref": "#/components/schemas/ItemPedidoEntrada" }
+					}
+				}
+			},
+			"ItemPedidoEntrada": {
+				"type": "object",
+				"required": ["produto_id", "quantidade"],
+				"properties": {
+					"produto_id": { "type": "integer", "minimum": 1, "example": 1 },
+					"quantidade": { "type": "integer", "minimum": 1, "example": 2 }
+				}
+			},
+			"Pedido": {
+				"type": "object",
+				"properties": {
+					"id": { "type": "integer", "example": 1 },
+					"cliente": { "type": "string", "nullable": true, "example": "João da Silva" },
+					"status": { "type": "string", "enum": ["pendente", "preparo", "pronto", "entregue"], "example": "pendente" },
+					"total": { "type": "number", "format": "double", "example": 71.0 },
+					"criado_em": { "type": "string", "format": "date-time" },
+					"atualizado_em": { "type": "string", "format": "date-time" },
+					"itens": { "type": "array", "items": { "$ref": "#/components/schemas/ItemPedido" } }
+				}
+			},
+			"ItemPedido": {
+				"type": "object",
+				"properties": {
+					"id": { "type": "integer", "example": 1 },
+					"pedido_id": { "type": "integer", "example": 1 },
+					"produto_id": { "type": "integer", "example": 1 },
+					"quantidade": { "type": "integer", "example": 2 },
+					"preco_unitario": { "type": "number", "format": "double", "example": 35.5 },
+					"produto_nome": { "type": "string", "example": "Espaguete à Bolonhesa" },
+					"produto_descricao": { "type": "string", "example": "Massa com molho de tomate e carne moída" }
+				}
+			},
+			"PedidoCriado": {
+				"type": "object",
+				"properties": {
+					"mensagem": { "type": "string", "example": "Pedido criado com sucesso" },
+					"pedido": { "$ref": "#/components/schemas/Pedido" }
+				}
+			},
+			"StatusPedidoEntrada": {
+				"type": "object",
+				"required": ["status"],
+				"properties": {
+					"status": { "type": "string", "enum": ["pendente", "preparo", "pronto", "entregue"], "example": "preparo" }
+				}
+			},
+			"PedidoAtualizado": {
+				"type": "object",
+				"properties": {
+					"mensagem": { "type": "string", "example": "Status atualizado com sucesso" },
+					"pedido": { "$ref": "#/components/schemas/Pedido" }
+				}
+			},
+			"MensagemSucesso": {
+				"type": "object",
+				"properties": { "mensagem": { "type": "string", "example": "Operação realizada com sucesso" } }
+			},
+			"Erro": {
+				"type": "object",
+				"properties": {
+					"sucesso": { "type": "boolean", "example": false },
+					"mensagem": { "type": "string", "example": "Requisição inválida" },
+					"erro": { "type": "string" }
+				}
+			}
+		},
+		"responses": {
+			"ErroRequisicao": { "description": "Requisição inválida", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Erro" } } } },
+			"ErroNaoAutorizado": { "description": "Token ausente ou inválido", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Erro" } } } },
+			"ErroProibido": { "description": "Acesso restrito para administradores", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Erro" } } } },
+			"ErroNaoEncontrado": { "description": "Recurso não encontrado", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Erro" } } } },
+			"ErroServidor": { "description": "Erro interno do servidor", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Erro" } } } }
+		}
+	}
+}
