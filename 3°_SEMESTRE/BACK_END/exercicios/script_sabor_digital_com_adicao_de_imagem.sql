@@ -45,6 +45,21 @@ CREATE TABLE IF NOT EXISTS pedido (
     atualizado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+-- Criar a tabela de utilizadores
+CREATE TABLE IF NOT EXISTS usuario (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    senha VARCHAR(255) NOT NULL,
+    papel ENUM('admin', 'cliente') DEFAULT 'cliente',
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Inserir utilizadores iniciais para testes
+INSERT INTO usuario (nome, email, senha, papel) VALUES 
+('Administrador', 'admin@sabor.com', '123456', 'admin'),
+('Cliente Teste', 'cliente@sabor.com', '123456', 'cliente');
+
 -- 6. Tabela de Itens do Pedido (N:M com Produto)
 CREATE TABLE IF NOT EXISTS item_pedido (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -64,4 +79,16 @@ INSERT INTO produto (nome, descricao, preco, categoria, disponivel) VALUES
 ('Suco de Laranja', 'Suco natural 500ml', 12.00, 'Bebida', true);
 
 ALTER TABLE produto ADD COLUMN imagem VARCHAR(255);
-SELECT * FROM produto
+SELECT * FROM produto;
+
+
+-- 1. Criar um cardápio inicial
+INSERT INTO cardapio (nome, descricao, disponivel) VALUES 
+('Cardápio Principal', 'A seleção dos melhores pratos da casa', true);
+
+-- 2. Associar os produtos (IDs 1, 2, 3, 4) a este cardápio (ID 1)
+INSERT INTO cardapio_produto (cardapio_id, produto_id) VALUES 
+(1, 1), -- Espaguete à Bolonhesa
+(1, 2), -- Lasanha de Frango
+(1, 3), -- Pizza Margherita
+(1, 4); -- Suco de Laranja
