@@ -25,7 +25,7 @@
         <td>{{marca}}</td>
         <td>{{modelo}}</td>
         <td>{{ano}}</td>
-        <td>{{cliente}}</td>
+        <td>{{cliente_id}}</td>
         <td>
             <a href="/veiculos?editar={{id}}">Editar</a>
             <form method="POST" action="/veiculos/{{id}}">
@@ -37,7 +37,7 @@
     {{/veiculos}}
     </table>
 
-    <h2>{{#editando}}Editar{{/editando}}{{^editando}} Cadastrar {{/editando}} cliente</h2>
+    <h2>{{#editando}}Editar{{/editando}}{{^editando}} Cadastrar {{/editando}} veículo</h2>
     <form method="POST" action="{{acao}}">
         {{#editando}}<input type="hidden" name="_method" value="PUT"/>{{/editando}}
         <select name="cliente_id" required>
