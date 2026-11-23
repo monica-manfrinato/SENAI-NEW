@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studio tatuagem - Projetos</title>
+</head>
+<body>
+    <h1>Projetos</h1>
+    <p><a href="/principal">Voltar</a></p>
+
+    <table border="1">
+    <tr>
+        <th>Projeto</th>
+        <th>Descrição</th>
+        <th>Parte do Corpo</th>
+        <th>Cliente</th>
+        <th></th>
+
+    </tr>
+    {{#projetos}}
+    <tr>
+        <td>{{nome_projeto}}</td>
+        <td>{{descricao}}</td>
+        <td>{{parte_do_corpo}}</td>
+        <td>{{cliente_id}}</td>
+        <td>
+            <a href="/projetos?editar={{id}}">Editar</a>
+            <form method="POST" action="/projetos/{{id}}">
+                <input type="hidden" name="_method" value="DELETE"/>
+                <button>Excluir</button>
+            </form>
+        </td>
+    </tr>
+    {{/projetos}}
+    </table>
+
+    <h2>{{#editando}}Editar{{/editando}}{{^editando}} Cadastrar {{/editando}} projeto</h2>
+    <form method="POST" action="{{acao}}">
+        {{#editando}}<input type="hidden" name="_method" value="PUT"/>{{/editando}}
+        <select name="cliente_id" required>
+            <option value="">Selecione o cliente</option>
+            {{#clientes}}
+            <option value="{{id}}" {{selecionado}}>{{nome}}</option>
+            {{/clientes}}
+        </select>
+        <input type="text" name="nome_projeto" placeholder="Nome do Projeto" value="{{form.nome_projeto}}" required>
+        <input type="text" name="descricao" placeholder="Descrição" value="{{form.descricao}}">
+        <input type="text" name="parte_do_corpo" placeholder="Em qual parte do corpo?" value="{{form.parte_do_corpo}}">
+        <button>{{#editando}}Salvar{{/editando}}{{^editando}} Cadastrar {{/editando}} projetos</button>
+    </form>
+    <p>{{erro}}</p>
+</body>
+</html>

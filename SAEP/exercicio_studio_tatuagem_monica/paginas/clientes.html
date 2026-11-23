@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studio Tatuagem - Clientes</title>
+</head>
+<body>
+    <h1>Clientes</h1>
+    <p><a href="/principal">Voltar</a></p>
+    <form method="GET" action="/clientes">
+        <input type="text" name="busca" placeholder="Buscar por nome" value="{{busca}}">
+        <button>Buscar</button>
+    </form>
+    <table border="1">
+        <tr>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>Telefone</th>
+            <th></th>
+        </tr>
+        {{#clientes}}
+        <tr>
+            <td>{{nome}}</td>
+            <td>{{cpf}}</td>
+            <td>{{telefone}}</td>
+            <td>
+                <a href="/clientes?editar={{id}}">Editar</a>
+                <form method="POST" action="/clientes/{{id}}">
+                    <input type="hidden" name="_method" value="DELETE"/>
+                    <button>Excluir</button>
+                </form>
+            </td>
+        </tr>
+        {{/clientes}}
+    </table>
+
+    <h2>{{#editando}}Editar{{/editando}}{{^editando}} Cadastrar {{/editando}} cliente</h2>
+    <form method="POST" action="{{acao}}">
+        {{#editando}}<input type="hidden" name="_method" value="PUT"/>{{/editando}}
+        <input type="text" name="nome" placeholder="Nome" value="{{form.nome}}" required>
+        <input type="text" name="cpf" placeholder="CPF" value="{{form.cpf}}" required>
+        <input type="text" name="telefone" placeholder="Telefone" value="{{form.telefone}}" required>
+        <button>{{#editando}}Salvar{{/editando}}{{^editando}} Cadastrar {{/editando}} cliente</button>
+    </form>
+</body>
+</html>
