@@ -226,15 +226,15 @@ res.send(mostrar('sessoes', {sessoes, projetos}))
 });
 
 app.post("/sessoes", async (req, res) => {
-  const { projeto_id, data_agendamento, servico } = req.body;
+  const { projeto_id, data_sessao, servico } = req.body;
 
-  if (!projeto_id || !data_agendamento || !servico) {
+  if (!projeto_id || !data_sessao || !servico) {
     return res.redirect("/sessoes");
   }
 
   await db.query(
     "INSERT INTO sessoes (projeto_id, data_sessao, descricao_servico) VALUES (?, ?, ?)",
-    [projeto_id, data_agendamento.replace("T", " "), servico]
+    [projeto_id, data_sessao.replace("T", " "), servico]
   );
 
   res.redirect("/sessoes");
